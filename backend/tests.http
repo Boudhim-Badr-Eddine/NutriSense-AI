@@ -1,0 +1,58 @@
+### Health check
+GET http://localhost:5000/api/health
+# Expected: 200 { "success": true, "data": { "status": "ok" } }
+
+### Health check (POST)
+POST http://localhost:5000/api/health
+# Expected: 200 { "success": true, "data": { "status": "ok" } }
+
+### Register user
+POST http://localhost:5000/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "taha.demo@example.com",
+  "password": "Password123",
+  "name": "Taha Demo"
+}
+# Expected: 201 { success: true, data: { user, token } }
+
+### Register duplicate user (should fail)
+POST http://localhost:5000/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "taha.demo@example.com",
+  "password": "Password123",
+  "name": "Taha Demo"
+}
+# Expected: 409 { success: false, error: "User already exists" }
+
+### Login user
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "taha.demo@example.com",
+  "password": "Password123"
+}
+# Expected: 200 { success: true, data: { user, token } }
+
+### Login with invalid credentials (should fail)
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "taha.demo@example.com",
+  "password": "WrongPassword123"
+}
+# Expected: 401 { success: false, error: "Invalid credentials" }
+
+### Profile with token (replace TOKEN)
+GET http://localhost:5000/api/auth/profile
+Authorization: Bearer TOKEN
+# Expected: 200 { success: true, data: { user } }
+
+### Profile without token (should fail)
+GET http://localhost:5000/api/auth/profile
+# Expected: 401 { success: false, error: "Missing authorization token" }
