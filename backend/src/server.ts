@@ -7,6 +7,7 @@ import { connectDatabase } from "./config/database";
 import { config } from "./config/env";
 import { errorHandler } from "./middleware/errorHandler";
 import authRoutes from "./routes/authRoutes";
+import chatRoutes from "./routes/chatRoutes";
 import complementRoutes from "./routes/complementRoutes";
 import foodRoutes from "./routes/foodRoutes";
 import supplementRoutes from "./routes/supplementRoutes";
@@ -38,6 +39,7 @@ app.get("/api/health", healthHandler);
 app.post("/api/health", healthHandler);
 
 app.use("/api/auth", authRoutes);
+app.use("/api/chat", chatRoutes);
 app.use("/api/supplements", supplementRoutes);
 app.use("/api/complements", complementRoutes);
 app.use("/api/foods", foodRoutes);

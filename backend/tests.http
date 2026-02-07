@@ -1,6 +1,6 @@
 @baseUrl = http://localhost:5000
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTg2NjdjN2JmYzA1NGE1MjA0NDNlMGMiLCJpYXQiOjE3NzA0MjI2NjcsImV4cCI6MTc3MTAyNzQ2N30.aBOFYGXoRl3ukaMqrZa8h2FUgOiCNxdW7_0h2yi7WH8
-@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTg2ODE4YWMwOWNmN2RiNjYxYWViMDgiLCJpYXQiOjE3NzA0MjI2NjcsImV4cCI6MTc3MTAyNzQ2N30.tvwJ4IgWrorBjZwh_zxNK2owH3hZ-S5cqzdkFceQl-o
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTg2NjdjN2JmYzA1NGE1MjA0NDNlMGMiLCJpYXQiOjE3NzA0MjM5NzUsImV4cCI6MTc3MTAyODc3NX0.ISdhvbmPOJan15nbT_mDI_WixAhQaWBS1qjLcpIb6vw
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTg2ODE4YWMwOWNmN2RiNjYxYWViMDgiLCJpYXQiOjE3NzA0MjM5NzYsImV4cCI6MTc3MTAyODc3Nn0.rd3R-OiMciAP9CBSBSiVNAhnjR-vkDtFeTBiegAXu44
 @supplementId = 69867f7345eb032228c8f702
 @complementId = 69867f7345eb032228c8f71d
 @foodId = 69867f7345eb032228c8f734
@@ -148,3 +148,43 @@ GET {{baseUrl}}/api/foods/rankings/fats
 ### Food by ID
 GET {{baseUrl}}/api/foods/{{foodId}}
 # Expected: 200 { success: true, data: {...} }
+
+### Chat - Creatine question
+POST {{baseUrl}}/api/chat
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "message": "What is creatine?"
+}
+# Expected: 200 { success: true, data: { response, links, sources } }
+
+### Chat - Protein foods question
+POST {{baseUrl}}/api/chat
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "message": "Which foods are high in protein?"
+}
+# Expected: 200 { success: true, data: { response, links, sources } }
+
+### Chat - Vitamin D question
+POST {{baseUrl}}/api/chat
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "message": "How much vitamin D should I take?"
+}
+# Expected: 200 { success: true, data: { response, links, sources } }
+
+### Chat history
+GET {{baseUrl}}/api/chat/history
+Authorization: Bearer {{token}}
+# Expected: 200 { success: true, data: [...] }
+
+### Clear chat history
+DELETE {{baseUrl}}/api/chat/history
+Authorization: Bearer {{token}}
+# Expected: 200 { success: true, data: null }

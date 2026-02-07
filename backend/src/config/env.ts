@@ -8,7 +8,7 @@ export interface Config {
   nodeEnv: "development" | "production" | "test";
   mongodb: { uri: string };
   jwt: { secret: string; expiresIn: string };
-  gemini: { apiKey: string; model: string };
+  gemini: { apiKey: string; model: string; apiVersion: string };
   cors: { origin: string };
 }
 
@@ -48,6 +48,7 @@ export const config: Config = {
   gemini: {
     apiKey: requireEnv("GEMINI_API_KEY"),
     model: requireEnv("GEMINI_MODEL"),
+    apiVersion: requireEnv("GEMINI_API_VERSION"),
   },
   cors: {
     origin: requireEnv("CORS_ORIGIN"),
