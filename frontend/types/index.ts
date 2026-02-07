@@ -40,6 +40,7 @@ export interface ScientificStudy {
 }
 
 export interface Supplement {
+  _id: string;
   id: string;
   name: string;
   slug: string;
@@ -78,6 +79,7 @@ export interface SupplementForm {
 }
 
 export interface Complement {
+  _id: string;
   id: string;
   name: string;
   slug: string;
@@ -112,6 +114,7 @@ export interface FoodPer100g {
 }
 
 export interface Food {
+  _id: string;
   id: string;
   name: string;
   slug: string;

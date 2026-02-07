@@ -3,56 +3,35 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
 
-import { useAuth } from "@/app/AuthContext";
+import { FoodFilters, FoodFilterValues } from "@/components/foods/FoodFilters";
+import { FoodTable } from "@/components/foods/FoodTable";
 import { Container } from "@/components/layout/Container";
-import { SupplementFilters } from "@/components/supplements/SupplementFilters";
-import { SupplementGrid } from "@/components/supplements/SupplementGrid";
-import { SupplementSkeleton } from "@/components/supplements/SupplementSkeleton";
 import { Button } from "@/components/ui/button";
-import { useSupplements, useToggleFavorite } from "@/hooks/useSupplements";
-
-interface SupplementFilterValues {
-  search: string;
-  category: string;
-  goal: string;
-  sort: string;
-}
+import { useFoods } from "@/hooks/useFoods";
 
 /**
- * WHY: Deliver a full supplements catalog with filters, pagination, and favorites.
+ * WHY: Provide a searchable, filterable food catalog for nutrition exploration.
  */
-export default function SupplementsPage() {
-  const { user } = useAuth();
-  const [filters, setFilters] = useState<SupplementFilterValues>({
+export default function FoodsPage() {
+  const [filters, setFilters] = useState<FoodFilterValues>({
     search: "",
-    category: "all",
-    goal: "all",
-    sort: "-popularity",
+    type: "all",
+    diet: "all",
   });
   const [page, setPage] = useState(1);
 
   const queryParams = {
     search: filters.search || undefined,
-    category: filters.category !== "all" ? filters.category : undefined,
-    goal: filters.goal !== "all" ? filters.goal : undefined,
-    sort: filters.sort,
+    type: filters.type !== "all" ? filters.type : undefined,
+    diet: filters.diet !== "all" ? filters.diet : undefined,
     page,
-    limit: 12,
+    limit: 20,
   };
 
-  const { data, isLoading, error } = useSupplements(queryParams);
-  const toggleFavorite = useToggleFavorite();
+  const { data, isLoading, error } = useFoods(queryParams);
 
-  const handleFavoriteClick = (id: string) => {
-    if (!user) {
-      alert("Please login to add favorites");
-      return;
-    }
-    toggleFavorite.mutate(id);
-  };
-
-  const handleFilterChange = (newFilters: SupplementFilterValues) => {
-    setFilters(newFilters);
+  const handleFilterChange = (nextFilters: FoodFilterValues) => {
+    setFilters(nextFilters);
     setPage(1);
   };
 
@@ -61,44 +40,34 @@ export default function SupplementsPage() {
       <Container>
         <div className="mb-8">
           <h1 className="mb-2 text-4xl font-bold text-gray-900">
-            Supplements Catalog
+            Foods Catalog
           </h1>
           <p className="text-lg text-gray-600">
-            Discover sports supplements and performance enhancers tailored to your goals.
+            Search foods by diet or type and compare macro values per 100g.
           </p>
         </div>
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
           <div className="lg:col-span-1">
-            <SupplementFilters onFilterChange={handleFilterChange} />
+            <FoodFilters onFilterChange={handleFilterChange} />
           </div>
 
           <div className="lg:col-span-3">
-            {isLoading && (
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {[...Array(6)].map((_, index) => (
-                  <SupplementSkeleton key={index} />
-                ))}
-              </div>
-            )}
-
+            {isLoading && <div className="text-gray-500">Loading foods...</div>}
             {error && (
               <div className="py-12 text-center">
-                <p className="text-red-500">Error loading supplements. Please try again.</p>
+                <p className="text-red-500">
+                  Error loading foods. Please try again.
+                </p>
               </div>
             )}
-
             {data && !isLoading && (
               <>
                 <div className="mb-4 text-sm text-gray-600">
                   {data.pagination &&
-                    `Showing ${data.data.length} of ${data.pagination.total} supplements`}
+                    `Showing ${data.data.length} of ${data.pagination.total} foods`}
                 </div>
-                <SupplementGrid
-                  supplements={data.data}
-                  onFavoriteClick={handleFavoriteClick}
-                  favoritedIds={user?.favorites?.supplements || []}
-                />
+                <FoodTable foods={data.data} />
 
                 {data.pagination && data.pagination.pages > 1 && (
                   <div className="mt-8 flex items-center justify-center gap-4">

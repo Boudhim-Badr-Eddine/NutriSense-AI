@@ -9,6 +9,8 @@ export const apiClient: AxiosInstance = axios.create({
   },
 });
 
+export const api = apiClient;
+
 apiClient.interceptors.request.use((config) => {
   if (typeof window !== "undefined") {
     const token = window.localStorage.getItem("authToken");

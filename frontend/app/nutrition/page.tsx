@@ -1,36 +1,75 @@
-import Link from 'next/link';
+import { Beef, Droplet, Wheat } from 'lucide-react';
 
+import { NutritionCard } from '@/components/foods/NutritionCard';
 import { Container } from '@/components/layout/Container';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 
 /**
- * WHY: Provide a landing scaffold until nutrition ranking views are wired.
+ * WHY: Introduce the nutrition guide and route users to ranking pages.
  */
-export default function NutritionPage() {
+export default function NutritionGuidePage() {
   return (
-    <div className='bg-slate-900 py-16 text-white'>
+    <div className='min-h-screen bg-gray-50 py-12'>
       <Container>
-        <div className='rounded-3xl border border-white/10 bg-slate-800/70 p-10 shadow-lg'>
-          <p className='text-sm font-semibold uppercase tracking-[0.2em] text-emerald-300'>
+        <div className='mb-12 text-center'>
+          <h1 className='mb-4 text-5xl font-bold text-gray-900'>
             Nutrition Guide
-          </p>
-          <h1 className='mt-4 text-3xl font-semibold'>
-            Macro-rich foods, ranked
           </h1>
-          <p className='mt-3 max-w-2xl text-slate-200'>
-            Compare the best protein, carbohydrate, and fat sources with
-            efficiency scores. The ranking tables and filters will be
-            available soon.
+          <p className='mx-auto max-w-2xl text-xl text-gray-600'>
+            Discover the best food sources for your macronutrient needs.
+            Compare nutritional values and make informed dietary choices.
           </p>
-          <div className='mt-6 flex flex-wrap gap-3'>
-            <Button className='bg-emerald-500 text-slate-900 hover:bg-emerald-400' asChild>
-              <Link href='/chat'>Ask the AI assistant</Link>
-            </Button>
-            <Button variant='outline' className='border-white/30 text-white' asChild>
-              <Link href='/'>Back to home</Link>
-            </Button>
-          </div>
         </div>
+
+        <div className='grid grid-cols-1 gap-8 md:grid-cols-3'>
+          <NutritionCard
+            title='Top Protein Sources'
+            description='Discover foods with the highest protein content per 100g.'
+            href='/nutrition/proteins'
+            icon={Beef}
+            toneClass='bg-red-100 text-red-600'
+          />
+          <NutritionCard
+            title='Top Carbohydrate Sources'
+            description='Find the best energy sources for your active lifestyle.'
+            href='/nutrition/carbs'
+            icon={Wheat}
+            toneClass='bg-yellow-100 text-yellow-600'
+          />
+          <NutritionCard
+            title='Top Healthy Fats'
+            description='Explore sources of essential fatty acids and healthy fats.'
+            href='/nutrition/fats'
+            icon={Droplet}
+            toneClass='bg-blue-100 text-blue-600'
+          />
+        </div>
+
+        <Card className='mt-12'>
+          <CardContent className='p-8'>
+            <h2 className='mb-4 text-2xl font-bold'>Understanding Macronutrients</h2>
+            <div className='grid gap-6 md:grid-cols-3'>
+              <div>
+                <h3 className='mb-2 font-bold text-red-600'>Proteins</h3>
+                <p className='text-sm text-gray-600'>
+                  Essential for muscle growth, repair, and maintenance. Provides 4 calories per gram.
+                </p>
+              </div>
+              <div>
+                <h3 className='mb-2 font-bold text-yellow-600'>Carbohydrates</h3>
+                <p className='text-sm text-gray-600'>
+                  Primary energy source for your body and brain. Provides 4 calories per gram.
+                </p>
+              </div>
+              <div>
+                <h3 className='mb-2 font-bold text-blue-600'>Fats</h3>
+                <p className='text-sm text-gray-600'>
+                  Vital for hormone production and nutrient absorption. Provides 9 calories per gram.
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </Container>
     </div>
   );
