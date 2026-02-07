@@ -1,6 +1,10 @@
+"use client";
+
+import { motion } from "framer-motion";
 import { Brain, ClipboardList, Database, Sparkles } from "lucide-react";
 
 import { Container } from "@/components/layout/Container";
+import { fadeIn, staggerContainer } from "@/lib/animations";
 
 const benefits = [
   {
@@ -30,7 +34,13 @@ const benefits = [
  */
 export const BenefitsSection = () => {
   return (
-    <section className="bg-slate-50 py-20">
+    <motion.section
+      className="bg-slate-50 py-20"
+      variants={fadeIn}
+      initial="initial"
+      whileInView="animate"
+      viewport={{ once: true, amount: 0.2 }}
+    >
       <Container>
         <div className="mb-10 text-center">
           <h2 className="text-3xl font-semibold text-slate-900">
@@ -40,28 +50,33 @@ export const BenefitsSection = () => {
             Everything is designed to help you make informed nutrition choices.
           </p>
         </div>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <motion.div
+          variants={staggerContainer}
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true, amount: 0.2 }}
+          className="grid gap-6 md:grid-cols-2 lg:grid-cols-4"
+        >
           {benefits.map((benefit) => {
             const Icon = benefit.icon;
             return (
-              <div
-                key={benefit.title}
-                className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
-              >
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 text-blue-600">
-                  <Icon className="h-6 w-6" />
+              <motion.div key={benefit.title} variants={fadeIn}>
+                <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 text-blue-600">
+                    <Icon className="h-6 w-6" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-slate-900">
+                    {benefit.title}
+                  </h3>
+                  <p className="mt-2 text-sm text-slate-600">
+                    {benefit.description}
+                  </p>
                 </div>
-                <h3 className="text-lg font-semibold text-slate-900">
-                  {benefit.title}
-                </h3>
-                <p className="mt-2 text-sm text-slate-600">
-                  {benefit.description}
-                </p>
-              </div>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
       </Container>
-    </section>
+    </motion.section>
   );
 };

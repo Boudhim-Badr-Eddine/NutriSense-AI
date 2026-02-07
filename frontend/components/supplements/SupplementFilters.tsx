@@ -1,5 +1,8 @@
 "use client";
 
+import { Filter, Search, X } from "lucide-react";
+import { useEffect, useState } from "react";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,8 +13,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Search, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 interface SupplementFiltersProps {
   onFilterChange: (filters: FilterValues) => void;
@@ -66,19 +75,19 @@ export const SupplementFilters = ({
     });
   };
 
-  return (
-    <div className="bg-white p-6 rounded-lg shadow-sm border space-y-4">
+  const filtersContent = (
+    <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-semibold">Filters</h3>
         <Button variant="ghost" size="sm" onClick={handleReset}>
-          <X className="h-4 w-4 mr-2" />
+          <X className="mr-2 h-4 w-4" />
           Reset
         </Button>
       </div>
       <div>
         <Label htmlFor="search">Search</Label>
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
           <Input
             id="search"
             placeholder="Search supplements..."
@@ -112,7 +121,9 @@ export const SupplementFilters = ({
         <Label htmlFor="goal">Goal</Label>
         <Select
           value={filters.goal}
-          onValueChange={(value: string) => setFilters({ ...filters, goal: value })}
+          onValueChange={(value: string) =>
+            setFilters({ ...filters, goal: value })
+          }
         >
           <SelectTrigger id="goal">
             <SelectValue />
@@ -130,7 +141,9 @@ export const SupplementFilters = ({
         <Label htmlFor="sort">Sort By</Label>
         <Select
           value={filters.sort}
-          onValueChange={(value: string) => setFilters({ ...filters, sort: value })}
+          onValueChange={(value: string) =>
+            setFilters({ ...filters, sort: value })
+          }
         >
           <SelectTrigger id="sort">
             <SelectValue />
@@ -145,5 +158,35 @@ export const SupplementFilters = ({
         </Select>
       </div>
     </div>
+  );
+
+  return (
+    <>
+      <div className="hidden rounded-lg border bg-white p-6 shadow-sm md:block">
+        {filtersContent}
+      </div>
+
+      <div className="md:hidden">
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button variant="outline" className="w-full justify-between">
+              Filters
+              <Filter className="h-4 w-4" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="w-80">
+            <SheetHeader className="mb-4">
+              <SheetTitle>Filters</SheetTitle>
+              <SheetClose asChild>
+                <Button variant="ghost" size="sm">
+                  Close
+                </Button>
+              </SheetClose>
+            </SheetHeader>
+            {filtersContent}
+          </SheetContent>
+        </Sheet>
+      </div>
+    </>
   );
 };

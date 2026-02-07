@@ -51,7 +51,7 @@ export const ChatWindow = ({
   };
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 flex h-[calc(100vh-2rem)] w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-2xl transition-all duration-300 animate-in fade-in-0 slide-in-from-bottom-6 sm:bottom-6 sm:right-6 sm:h-[600px] sm:w-[400px] sm:rounded-2xl">
+    <div className="flex h-full w-full flex-col overflow-hidden rounded-none border border-slate-200 bg-white shadow-2xl transition-all duration-300 animate-in fade-in-0 slide-in-from-bottom-6 sm:rounded-2xl">
       <ChatHeader
         onClose={onClose}
         onMinimize={onMinimize}

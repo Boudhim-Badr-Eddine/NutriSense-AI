@@ -1,8 +1,38 @@
+import type { Metadata } from "next";
+
 import { Beef, Droplet, Wheat } from 'lucide-react';
 
 import { NutritionCard } from '@/components/foods/NutritionCard';
 import { Container } from '@/components/layout/Container';
 import { Card, CardContent } from '@/components/ui/card';
+
+export const metadata: Metadata = {
+  title: "Nutrition Guide",
+  description:
+    "Discover top protein, carb, and healthy fat sources with clear nutrition rankings.",
+  keywords: [
+    "nutrition guide",
+    "proteins",
+    "carbohydrates",
+    "healthy fats",
+    "foods",
+    "macros",
+    "diet",
+  ],
+  openGraph: {
+    title: "Nutrition Guide | NutriSense AI",
+    description:
+      "Discover top protein, carb, and healthy fat sources with clear nutrition rankings.",
+    type: "website",
+    url: "https://nutrisense-ai.com/nutrition",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Nutrition Guide | NutriSense AI",
+    description:
+      "Discover top protein, carb, and healthy fat sources with clear nutrition rankings.",
+  },
+};
 
 /**
  * WHY: Introduce the nutrition guide and route users to ranking pages.

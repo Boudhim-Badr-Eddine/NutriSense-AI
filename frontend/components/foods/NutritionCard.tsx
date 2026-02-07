@@ -1,3 +1,6 @@
+"use client";
+
+import { motion } from "framer-motion";
 import { LucideIcon } from "lucide-react";
 import Link from "next/link";
 
@@ -9,6 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { fadeIn } from "@/lib/animations";
 
 interface NutritionCardProps {
   title: string;
@@ -29,23 +33,30 @@ export const NutritionCard = ({
   toneClass,
 }: NutritionCardProps) => {
   return (
-    <Card className="transition-shadow hover:shadow-xl">
-      <CardHeader className="text-center">
-        <div
-          className={`mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full ${toneClass}`}
-        >
-          <Icon className="h-8 w-8" />
-        </div>
-        <CardTitle className="text-2xl">{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Link href={href} className="w-full">
-          <Button className="w-full" size="lg">
-            View Rankings
-          </Button>
-        </Link>
-      </CardContent>
-    </Card>
+    <motion.div
+      variants={fadeIn}
+      initial="initial"
+      whileInView="animate"
+      viewport={{ once: true, amount: 0.2 }}
+    >
+      <Card className="transition-shadow hover:shadow-xl">
+        <CardHeader className="text-center">
+          <div
+            className={`mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full ${toneClass}`}
+          >
+            <Icon className="h-8 w-8" />
+          </div>
+          <CardTitle className="text-2xl">{title}</CardTitle>
+          <CardDescription>{description}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Link href={href} className="w-full">
+            <Button className="w-full" size="lg">
+              View Rankings
+            </Button>
+          </Link>
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 };

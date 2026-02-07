@@ -1,9 +1,11 @@
 'use client';
 
 import { ArrowUpDown } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import type { Food } from '@/types';
 import { FoodTableRow } from './FoodTableRow';
@@ -17,6 +19,7 @@ interface FoodTableProps {
  * WHY: Present sortable nutrition rankings with responsive table layout.
  */
 export const FoodTable = ({ foods, highlightColumn }: FoodTableProps) => {
+  const router = useRouter();
   const [sortBy, setSortBy] = useState<string>(highlightColumn || 'proteins');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
@@ -61,53 +64,86 @@ export const FoodTable = ({ foods, highlightColumn }: FoodTableProps) => {
   }, [foods, sortBy, sortOrder]);
 
   return (
-    <div className='overflow-hidden rounded-lg border bg-white'>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>
-              <Button variant='ghost' onClick={() => handleSort('name')}>
-                Food Name <ArrowUpDown className='ml-2 h-4 w-4' />
-              </Button>
-            </TableHead>
-            <TableHead>
-              <Button variant='ghost' onClick={() => handleSort('calories')}>
-                Calories <ArrowUpDown className='ml-2 h-4 w-4' />
-              </Button>
-            </TableHead>
-            <TableHead className={highlightColumn === 'proteins' ? 'bg-primary/10' : ''}>
-              <Button variant='ghost' onClick={() => handleSort('proteins')}>
-                Protein (g) <ArrowUpDown className='ml-2 h-4 w-4' />
-              </Button>
-            </TableHead>
-            <TableHead className={highlightColumn === 'carbs' ? 'bg-primary/10' : ''}>
-              <Button variant='ghost' onClick={() => handleSort('carbs')}>
-                Carbs (g) <ArrowUpDown className='ml-2 h-4 w-4' />
-              </Button>
-            </TableHead>
-            <TableHead className={highlightColumn === 'fats' ? 'bg-primary/10' : ''}>
-              <Button variant='ghost' onClick={() => handleSort('fats')}>
-                Fats (g) <ArrowUpDown className='ml-2 h-4 w-4' />
-              </Button>
-            </TableHead>
-            <TableHead>
-              <Button variant='ghost' onClick={() => handleSort('proteinCalorieRatio')}>
-                P/Cal Ratio <ArrowUpDown className='ml-2 h-4 w-4' />
-              </Button>
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {sortedFoods.map((food, index) => (
-            <FoodTableRow
-              key={food._id}
-              food={food}
-              index={index}
-              highlightColumn={highlightColumn}
-            />
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+    <>
+      <div className='hidden overflow-hidden rounded-lg border bg-white md:block'>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>
+                <Button variant='ghost' onClick={() => handleSort('name')}>
+                  Food Name <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+              </TableHead>
+              <TableHead>
+                <Button variant='ghost' onClick={() => handleSort('calories')}>
+                  Calories <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+              </TableHead>
+              <TableHead
+                className={highlightColumn === 'proteins' ? 'bg-primary/10' : ''}
+              >
+                <Button variant='ghost' onClick={() => handleSort('proteins')}>
+                  Protein (g) <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+              </TableHead>
+              <TableHead
+                className={highlightColumn === 'carbs' ? 'bg-primary/10' : ''}
+              >
+                <Button variant='ghost' onClick={() => handleSort('carbs')}>
+                  Carbs (g) <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+              </TableHead>
+              <TableHead
+                className={highlightColumn === 'fats' ? 'bg-primary/10' : ''}
+              >
+                <Button variant='ghost' onClick={() => handleSort('fats')}>
+                  Fats (g) <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+              </TableHead>
+              <TableHead>
+                <Button
+                  variant='ghost'
+                  onClick={() => handleSort('proteinCalorieRatio')}
+                >
+                  P/Cal Ratio <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {sortedFoods.map((food, index) => (
+              <FoodTableRow
+                key={food._id}
+                food={food}
+                index={index}
+                highlightColumn={highlightColumn}
+              />
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+
+      <div className='space-y-4 md:hidden'>
+        {sortedFoods.map((food) => (
+          <Card
+            key={food._id}
+            className='cursor-pointer transition-shadow hover:shadow-md'
+            onClick={() => router.push(`/nutrition/foods/${food._id}`)}
+          >
+            <CardHeader>
+              <CardTitle className='text-lg'>{food.name}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className='grid grid-cols-2 gap-2 text-sm text-slate-600'>
+                <div>Calories: {food.per100g.calories}</div>
+                <div>Protein: {food.per100g.proteins}g</div>
+                <div>Carbs: {food.per100g.carbs}g</div>
+                <div>Fats: {food.per100g.fats}g</div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </>
   );
 };

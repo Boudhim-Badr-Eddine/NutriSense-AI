@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { useChatEvents } from "@/lib/chatUtils";
 
@@ -15,6 +15,7 @@ export const ChatWidget = () => {
   const [prefilledQuestion, setPrefilledQuestion] = useState<string | null>(
     null,
   );
+  const [isMobile, setIsMobile] = useState(false);
 
   const handleOpen = useCallback((question: string) => {
     setPrefilledQuestion(question);
@@ -22,6 +23,16 @@ export const ChatWidget = () => {
   }, []);
 
   useChatEvents(handleOpen);
+
+  useEffect(() => {
+    const updateViewport = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    updateViewport();
+    window.addEventListener("resize", updateViewport);
+    return () => window.removeEventListener("resize", updateViewport);
+  }, []);
 
   const handleClose = () => {
     setIsOpen(false);
@@ -33,11 +44,19 @@ export const ChatWidget = () => {
       {!isOpen && <ChatFloatingButton onClick={() => setIsOpen(true)} />}
 
       {isOpen && (
-        <ChatWindow
-          onClose={handleClose}
-          onMinimize={handleClose}
-          prefilledQuestion={prefilledQuestion}
-        />
+        <div
+          className={
+            isMobile
+              ? "fixed inset-0 z-50"
+              : "fixed bottom-6 right-6 z-50 h-[600px] w-[400px]"
+          }
+        >
+          <ChatWindow
+            onClose={handleClose}
+            onMinimize={handleClose}
+            prefilledQuestion={prefilledQuestion}
+          />
+        </div>
       )}
     </>
   );

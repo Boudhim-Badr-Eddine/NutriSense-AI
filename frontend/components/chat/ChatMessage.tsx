@@ -1,8 +1,10 @@
 "use client";
 
+import { motion } from "framer-motion";
 import Link from "next/link";
 
 import type { ChatMessage as ChatMessageType } from "@/hooks/useChat";
+import { slideInFromBottom } from "@/lib/animations";
 import type { ChatLink } from "@/lib/chat";
 
 interface ChatMessageProps {
@@ -28,15 +30,15 @@ const buildMessageParts = (
 
   while (remaining.length > 0) {
     let earliestIndex = -1;
-    let matchedLink: ChatLink | null = null;
+    let matchedLink: ChatLink | undefined;
 
-    links.forEach((link) => {
+    for (const link of links) {
       const index = remaining.indexOf(link.text);
       if (index !== -1 && (earliestIndex === -1 || index < earliestIndex)) {
         earliestIndex = index;
         matchedLink = link;
       }
-    });
+    }
 
     if (!matchedLink || earliestIndex === -1) {
       parts.push({ type: "text", value: remaining });
@@ -76,7 +78,12 @@ export const ChatMessage = ({ message }: ChatMessageProps) => {
       : new Date(message.timestamp);
 
   return (
-    <div className={`mb-4 flex ${isUser ? "justify-end" : "justify-start"}`}>
+    <motion.div
+      variants={slideInFromBottom}
+      initial="initial"
+      animate="animate"
+      className={`mb-4 flex ${isUser ? "justify-end" : "justify-start"}`}
+    >
       <div className={`max-w-[82%] ${isUser ? "order-2" : "order-1"}`}>
         <div
           className={`rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${
@@ -139,6 +146,6 @@ export const ChatMessage = ({ message }: ChatMessageProps) => {
           {isUser ? "You" : "AI"}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };

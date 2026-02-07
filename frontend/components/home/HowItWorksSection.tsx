@@ -1,6 +1,10 @@
+"use client";
+
+import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
 import { Container } from "@/components/layout/Container";
+import { fadeIn, staggerContainer } from "@/lib/animations";
 
 const steps = [
   {
@@ -25,7 +29,13 @@ const steps = [
  */
 export const HowItWorksSection = () => {
   return (
-    <section className="py-20">
+    <motion.section
+      className="py-20"
+      variants={fadeIn}
+      initial="initial"
+      whileInView="animate"
+      viewport={{ once: true, amount: 0.2 }}
+    >
       <Container>
         <div className="mb-10 text-center">
           <h2 className="text-3xl font-semibold text-slate-900">
@@ -35,9 +45,19 @@ export const HowItWorksSection = () => {
             Three simple steps to smarter nutrition decisions.
           </p>
         </div>
-        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+        <motion.div
+          variants={staggerContainer}
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true, amount: 0.2 }}
+          className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between"
+        >
           {steps.map((step, index) => (
-            <div key={step.step} className="flex flex-1 items-center gap-4">
+            <motion.div
+              key={step.step}
+              variants={fadeIn}
+              className="flex flex-1 items-center gap-4"
+            >
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
                 <span className="text-sm font-semibold">{step.step}</span>
               </div>
@@ -50,10 +70,10 @@ export const HowItWorksSection = () => {
               {index < steps.length - 1 && (
                 <ArrowRight className="hidden h-5 w-5 text-slate-400 md:block" />
               )}
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </Container>
-    </section>
+    </motion.section>
   );
 };

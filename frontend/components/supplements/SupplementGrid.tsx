@@ -1,3 +1,8 @@
+"use client";
+
+import { motion } from "framer-motion";
+
+import { staggerContainer } from "@/lib/animations";
 import type { Supplement } from "@/types";
 import { SupplementCard } from "./SupplementCard";
 
@@ -23,7 +28,12 @@ export const SupplementGrid = ({
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <motion.div
+      variants={staggerContainer}
+      initial="initial"
+      animate="animate"
+      className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
+    >
       {supplements.map((supplement) => (
         <SupplementCard
           key={supplement._id}
@@ -32,6 +42,6 @@ export const SupplementGrid = ({
           isFavorited={favoritedIds.includes(supplement._id)}
         />
       ))}
-    </div>
+    </motion.div>
   );
 };

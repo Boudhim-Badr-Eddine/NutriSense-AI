@@ -1,14 +1,24 @@
+"use client";
+
+import { motion } from "framer-motion";
 import Link from "next/link";
 
 import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/button";
+import { fadeIn } from "@/lib/animations";
 
 /**
  * WHY: Provide a strong hero message and primary CTAs.
  */
 export const HeroSection = () => {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-emerald-50 via-white to-blue-50 py-20">
+    <motion.section
+      className="relative overflow-hidden bg-gradient-to-br from-emerald-50 via-white to-blue-50 py-20"
+      variants={fadeIn}
+      initial="initial"
+      whileInView="animate"
+      viewport={{ once: true, amount: 0.3 }}
+    >
       <div className="absolute inset-0 opacity-40">
         <div className="h-full w-full bg-[radial-gradient(circle_at_top,_#10b9811a,_transparent_55%)]" />
       </div>
@@ -34,6 +44,6 @@ export const HeroSection = () => {
           </div>
         </div>
       </Container>
-    </section>
+    </motion.section>
   );
 };

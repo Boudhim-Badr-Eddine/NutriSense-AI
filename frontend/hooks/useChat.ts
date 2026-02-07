@@ -37,9 +37,10 @@ export const useChat = (): UseChatResult => {
 
   useEffect(() => {
     if (!user) {
-      setMessages([]);
-      setConversationId(undefined);
       hasLoadedHistory.current = false;
+      if (typeof window !== "undefined") {
+        window.localStorage.removeItem(CONVERSATION_STORAGE_KEY);
+      }
       return;
     }
 
@@ -82,7 +83,10 @@ export const useChat = (): UseChatResult => {
           activeConversation.messages.map((message) => ({
             role: message.role,
             content: message.content,
-            links: message.links,
+            links: message.links?.map((link) => ({
+              ...link,
+              type: "resource",
+            })),
             timestamp: new Date(message.timestamp),
             status: "success",
           })),
@@ -92,6 +96,8 @@ export const useChat = (): UseChatResult => {
         hasLoadedHistory.current = false;
       });
   }, [user]);
+
+  const visibleMessages = user ? messages : [];
 
   const sendMessageMutation = useMutation({
     mutationFn: chatApi.sendMessage,
@@ -188,7 +194,7 @@ export const useChat = (): UseChatResult => {
   }, []);
 
   return {
-    messages,
+    messages: visibleMessages,
     sendMessage,
     clearConversation,
     isLoading: sendMessageMutation.isPending,

@@ -28,6 +28,7 @@ export const ChatInput = ({ onSend, disabled = false }: ChatInputProps) => {
       }
       ref.current.style.height = "auto";
     },
+    [],
   );
 
   const handleSend = useCallback(() => {

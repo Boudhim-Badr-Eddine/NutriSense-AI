@@ -2,7 +2,6 @@
 
 import { Menu } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
 
 import { useAuth } from "@/app/AuthContext";
 import { Container } from "@/components/layout/Container";
@@ -13,6 +12,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -26,7 +33,6 @@ const navLinks = [
  */
 export const Navbar = () => {
   const { user, logout } = useAuth();
-  const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur">
@@ -73,55 +79,64 @@ export const Navbar = () => {
             )}
           </div>
 
-          <Button
-            variant="ghost"
-            size="icon"
-            className="md:hidden"
-            onClick={() => setIsMobileOpen((prev) => !prev)}
-            aria-label="Toggle navigation"
-          >
-            <Menu className="h-5 w-5" />
-          </Button>
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="md:hidden"
+                aria-label="Open navigation"
+              >
+                <Menu className="h-5 w-5" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-72">
+              <SheetHeader>
+                <SheetTitle>Menu</SheetTitle>
+              </SheetHeader>
+              <nav className="mt-6 flex flex-col gap-4">
+                {navLinks.map((link) => (
+                  <SheetClose asChild key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-sm font-medium text-slate-700 transition-colors hover:text-slate-900"
+                    >
+                      {link.label}
+                    </Link>
+                  </SheetClose>
+                ))}
+              </nav>
+              <div className="mt-6 flex flex-col gap-2">
+                {!user ? (
+                  <>
+                    <SheetClose asChild>
+                      <Button variant="ghost" asChild>
+                        <Link href="/login">Login</Link>
+                      </Button>
+                    </SheetClose>
+                    <SheetClose asChild>
+                      <Button asChild>
+                        <Link href="/register">Register</Link>
+                      </Button>
+                    </SheetClose>
+                  </>
+                ) : (
+                  <>
+                    <SheetClose asChild>
+                      <Button variant="outline" asChild>
+                        <Link href="/profile">Profile</Link>
+                      </Button>
+                    </SheetClose>
+                    <Button variant="destructive" onClick={logout}>
+                      Logout
+                    </Button>
+                  </>
+                )}
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </Container>
-
-      {isMobileOpen && (
-        <div className="border-t bg-white md:hidden">
-          <Container className="flex flex-col gap-4 py-4">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-sm font-medium text-slate-600 transition-colors hover:text-slate-900"
-                onClick={() => setIsMobileOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))}
-            <div className="flex flex-col gap-2">
-              {!user ? (
-                <>
-                  <Button variant="ghost" asChild>
-                    <Link href="/login">Login</Link>
-                  </Button>
-                  <Button asChild>
-                    <Link href="/register">Register</Link>
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Button variant="outline" asChild>
-                    <Link href="/profile">Profile</Link>
-                  </Button>
-                  <Button variant="destructive" onClick={logout}>
-                    Logout
-                  </Button>
-                </>
-              )}
-            </div>
-          </Container>
-        </div>
-      )}
     </header>
   );
 };

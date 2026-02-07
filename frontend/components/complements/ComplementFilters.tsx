@@ -1,8 +1,9 @@
 "use client";
 
-import { Search, X } from "lucide-react";
+import { Filter, Search, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,6 +14,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 export interface ComplementFilterValues {
   search: string;
@@ -67,8 +76,8 @@ export const ComplementFilters = ({
     });
   };
 
-  return (
-    <div className="space-y-4 rounded-lg border bg-white p-6 shadow-sm">
+  const filtersContent = (
+    <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-semibold">Filters</h3>
         <Button variant="ghost" size="sm" onClick={handleReset}>
@@ -118,7 +127,9 @@ export const ComplementFilters = ({
         <Label htmlFor="sort">Sort By</Label>
         <Select
           value={filters.sort}
-          onValueChange={(value: string) => setFilters({ ...filters, sort: value })}
+          onValueChange={(value: string) =>
+            setFilters({ ...filters, sort: value })
+          }
         >
           <SelectTrigger id="sort">
             <SelectValue />
@@ -133,5 +144,38 @@ export const ComplementFilters = ({
         </Select>
       </div>
     </div>
+  );
+
+  return (
+    <>
+      <div className="hidden rounded-lg border bg-white p-6 shadow-sm md:block">
+        {filtersContent}
+      </div>
+
+      <div className="md:hidden">
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button variant="outline" className="w-full justify-between">
+              <span className="flex items-center gap-2">
+                <Badge variant="secondary">Filters</Badge>
+                <span className="text-sm">Refine</span>
+              </span>
+              <Filter className="h-4 w-4" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="w-80">
+            <SheetHeader className="mb-4">
+              <SheetTitle>Filters</SheetTitle>
+              <SheetClose asChild>
+                <Button variant="ghost" size="sm">
+                  Close
+                </Button>
+              </SheetClose>
+            </SheetHeader>
+            {filtersContent}
+          </SheetContent>
+        </Sheet>
+      </div>
+    </>
   );
 };
