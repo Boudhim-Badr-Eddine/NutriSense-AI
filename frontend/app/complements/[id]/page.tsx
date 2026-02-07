@@ -20,6 +20,7 @@ import {
   useComplement,
   useToggleComplementFavorite,
 } from "@/hooks/useComplements";
+import { openChatWithQuestion } from "@/lib/chatUtils";
 
 /**
  * WHY: Provide detailed complement information for informed supplementation.
@@ -267,7 +268,15 @@ export default function ComplementDetailPage() {
                 </h3>
                 <p>Ask our AI assistant for personalized guidance and tips.</p>
               </div>
-              <Button variant="secondary" size="lg">
+              <Button
+                variant="secondary"
+                size="lg"
+                onClick={() =>
+                  openChatWithQuestion(
+                    `Tell me more about ${complement.name}`,
+                  )
+                }
+              >
                 Ask AI <ExternalLink className="ml-2 h-4 w-4" />
               </Button>
             </div>

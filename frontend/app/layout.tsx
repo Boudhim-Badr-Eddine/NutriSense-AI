@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
+import { ChatWidget } from "@/components/chat/ChatWidget";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { AuthProvider } from "./AuthContext";
@@ -29,6 +30,7 @@ export default function RootLayout({
             <Navbar />
             <main className="min-h-screen">{children}</main>
             <Footer />
+            <ChatWidget />
           </AuthProvider>
         </Providers>
       </body>

@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useSupplement, useToggleFavorite } from "@/hooks/useSupplements";
+import { openChatWithQuestion } from "@/lib/chatUtils";
 import {
   AlertTriangle,
   Calendar,
@@ -220,7 +221,13 @@ export default function SupplementDetailPage() {
                   recommendations.
                 </p>
               </div>
-              <Button variant="secondary" size="lg">
+              <Button
+                variant="secondary"
+                size="lg"
+                onClick={() =>
+                  openChatWithQuestion(`Tell me more about ${supplement.name}`)
+                }
+              >
                 Ask AI
               </Button>
             </div>

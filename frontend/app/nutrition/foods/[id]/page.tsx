@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useFood, useToggleFoodFavorite } from "@/hooks/useFoods";
+import { openChatWithQuestion } from "@/lib/chatUtils";
 
 /**
  * WHY: Provide a comprehensive nutritional breakdown for a single food.
@@ -218,7 +219,15 @@ export default function FoodDetailPage() {
                 </h3>
                 <p>Ask our AI assistant for personalized suggestions.</p>
               </div>
-              <Button variant="secondary" size="lg">
+              <Button
+                variant="secondary"
+                size="lg"
+                onClick={() =>
+                  openChatWithQuestion(
+                    `Give me meal ideas with ${food.name}`,
+                  )
+                }
+              >
                 Ask AI <ExternalLink className="ml-2 h-4 w-4" />
               </Button>
             </div>
