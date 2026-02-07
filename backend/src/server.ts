@@ -7,6 +7,9 @@ import { connectDatabase } from "./config/database";
 import { config } from "./config/env";
 import { errorHandler } from "./middleware/errorHandler";
 import authRoutes from "./routes/authRoutes";
+import complementRoutes from "./routes/complementRoutes";
+import foodRoutes from "./routes/foodRoutes";
+import supplementRoutes from "./routes/supplementRoutes";
 import { logger } from "./utils/logger";
 
 const app = express();
@@ -35,6 +38,9 @@ app.get("/api/health", healthHandler);
 app.post("/api/health", healthHandler);
 
 app.use("/api/auth", authRoutes);
+app.use("/api/supplements", supplementRoutes);
+app.use("/api/complements", complementRoutes);
+app.use("/api/foods", foodRoutes);
 
 app.use(errorHandler);
 

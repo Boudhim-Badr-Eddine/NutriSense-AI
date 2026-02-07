@@ -1,13 +1,20 @@
+@baseUrl = http://localhost:5000
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTg2NjdjN2JmYzA1NGE1MjA0NDNlMGMiLCJpYXQiOjE3NzA0MjI2NjcsImV4cCI6MTc3MTAyNzQ2N30.aBOFYGXoRl3ukaMqrZa8h2FUgOiCNxdW7_0h2yi7WH8
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTg2ODE4YWMwOWNmN2RiNjYxYWViMDgiLCJpYXQiOjE3NzA0MjI2NjcsImV4cCI6MTc3MTAyNzQ2N30.tvwJ4IgWrorBjZwh_zxNK2owH3hZ-S5cqzdkFceQl-o
+@supplementId = 69867f7345eb032228c8f702
+@complementId = 69867f7345eb032228c8f71d
+@foodId = 69867f7345eb032228c8f734
+
 ### Health check
-GET http://localhost:5000/api/health
-# Expected: 200 { "success": true, "data": { "status": "ok" } }
+GET {{baseUrl}}/api/health
+# Expected: 200 { success: true, data: { status: "ok" } }
 
 ### Health check (POST)
-POST http://localhost:5000/api/health
-# Expected: 200 { "success": true, "data": { "status": "ok" } }
+POST {{baseUrl}}/api/health
+# Expected: 200 { success: true, data: { status: "ok" } }
 
 ### Register user
-POST http://localhost:5000/api/auth/register
+POST {{baseUrl}}/api/auth/register
 Content-Type: application/json
 
 {
@@ -18,7 +25,7 @@ Content-Type: application/json
 # Expected: 201 { success: true, data: { user, token } }
 
 ### Register duplicate user (should fail)
-POST http://localhost:5000/api/auth/register
+POST {{baseUrl}}/api/auth/register
 Content-Type: application/json
 
 {
@@ -29,7 +36,7 @@ Content-Type: application/json
 # Expected: 409 { success: false, error: "User already exists" }
 
 ### Login user
-POST http://localhost:5000/api/auth/login
+POST {{baseUrl}}/api/auth/login
 Content-Type: application/json
 
 {
@@ -39,7 +46,7 @@ Content-Type: application/json
 # Expected: 200 { success: true, data: { user, token } }
 
 ### Login with invalid credentials (should fail)
-POST http://localhost:5000/api/auth/login
+POST {{baseUrl}}/api/auth/login
 Content-Type: application/json
 
 {
@@ -48,11 +55,96 @@ Content-Type: application/json
 }
 # Expected: 401 { success: false, error: "Invalid credentials" }
 
-### Profile with token (replace TOKEN)
-GET http://localhost:5000/api/auth/profile
-Authorization: Bearer TOKEN
+### Profile with token
+GET {{baseUrl}}/api/auth/profile
+Authorization: Bearer {{token}}
 # Expected: 200 { success: true, data: { user } }
 
 ### Profile without token (should fail)
-GET http://localhost:5000/api/auth/profile
+GET {{baseUrl}}/api/auth/profile
 # Expected: 401 { success: false, error: "Missing authorization token" }
+
+### Supplements list
+GET {{baseUrl}}/api/supplements
+# Expected: 200 { success: true, data: [], pagination: {...} }
+
+### Supplements search
+GET {{baseUrl}}/api/supplements?search=protein
+# Expected: 200 { success: true, data: [...] }
+
+### Supplements filter by category
+GET {{baseUrl}}/api/supplements?category=proteins
+# Expected: 200 { success: true, data: [...] }
+
+### Supplements pagination
+GET {{baseUrl}}/api/supplements?page=1&limit=10
+# Expected: 200 { success: true, data: [...], pagination: {...} }
+
+### Supplement by ID
+GET {{baseUrl}}/api/supplements/{{supplementId}}
+# Expected: 200 { success: true, data: {...} }
+
+### Toggle supplement favorite
+POST {{baseUrl}}/api/supplements/{{supplementId}}/favorite
+Authorization: Bearer {{token}}
+# Expected: 200 { success: true, data: { user } }
+
+### Create supplement (admin only)
+POST {{baseUrl}}/api/supplements
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "name": "Hydrolyzed Whey Protein",
+  "category": "proteins",
+  "description": "Ultra-fast hydrolyzed whey protein for rapid amino delivery and recovery support after training sessions.",
+  "benefits": ["Fast absorption", "Supports muscle recovery"],
+  "dosage": "25-30g per serving",
+  "timing": "Post-workout",
+  "duration": "Daily",
+  "ingredients": ["Hydrolyzed whey protein isolate"],
+  "contraindications": ["Milk allergy"],
+  "scientificStudies": [
+    {
+      "title": "Hydrolyzed whey and muscle recovery",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/?term=hydrolyzed+whey+recovery",
+      "summary": "Hydrolyzed whey may accelerate amino acid availability post-exercise."
+    }
+  ],
+  "images": ["https://placehold.co/800x600?text=Hydrolyzed+Whey"],
+  "goals": ["mass", "endurance"],
+  "popularity": 10
+}
+# Expected: 201 { success: true, data: {...} }
+
+### Complements list
+GET {{baseUrl}}/api/complements
+# Expected: 200 { success: true, data: [], pagination: {...} }
+
+### Complements filter by category
+GET {{baseUrl}}/api/complements?category=vitamin
+# Expected: 200 { success: true, data: [...] }
+
+### Complement by ID
+GET {{baseUrl}}/api/complements/{{complementId}}
+# Expected: 200 { success: true, data: {...} }
+
+### Foods list
+GET {{baseUrl}}/api/foods
+# Expected: 200 { success: true, data: [], pagination: {...} }
+
+### Top protein sources
+GET {{baseUrl}}/api/foods/rankings/proteins
+# Expected: 200 { success: true, data: [...] }
+
+### Top carb sources
+GET {{baseUrl}}/api/foods/rankings/carbs
+# Expected: 200 { success: true, data: [...] }
+
+### Top fat sources
+GET {{baseUrl}}/api/foods/rankings/fats
+# Expected: 200 { success: true, data: [...] }
+
+### Food by ID
+GET {{baseUrl}}/api/foods/{{foodId}}
+# Expected: 200 { success: true, data: {...} }
