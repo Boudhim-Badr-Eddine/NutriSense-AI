@@ -27,8 +27,21 @@ export const ComplementCard = ({
   onFavoriteClick,
   isFavorited,
 }: ComplementCardProps) => {
+  const detailPath = `/complements/${complement.slug || complement._id}`;
+
   return (
-    <Card className="flex h-full flex-col transition-shadow hover:shadow-lg">
+    <Card className="group flex h-full flex-col overflow-hidden border-slate-200 transition-shadow hover:shadow-xl">
+      {complement.images?.[0] && (
+        <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-50 p-3">
+          <img
+            src={complement.images[0]}
+            alt={complement.name}
+            className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105"
+            loading="lazy"
+          />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/35 to-transparent" />
+        </div>
+      )}
       <CardHeader>
         <div className="flex items-start justify-between">
           <Badge variant="secondary" className="mb-2">
@@ -75,7 +88,7 @@ export const ComplementCard = ({
         )}
       </CardContent>
       <CardFooter>
-        <Link href={`/complements/${complement._id}`} className="w-full">
+        <Link href={detailPath} className="w-full">
           <Button className="w-full">
             View Details <ArrowRight className="ml-2 h-4 w-4" />
           </Button>

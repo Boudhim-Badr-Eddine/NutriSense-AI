@@ -34,9 +34,10 @@ const getFood = async (id: string): Promise<Food | null> => {
 export async function generateMetadata({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }): Promise<Metadata> {
-  const food = await getFood(params.id);
+  const { id } = await params;
+  const food = await getFood(id);
 
   if (!food) {
     return {
@@ -46,7 +47,7 @@ export async function generateMetadata({
         title: "Food Details | NutriSense AI",
         description: "Food nutrition details, benefits, and meal ideas.",
         type: "website",
-        url: `${siteUrl}/nutrition/foods/${params.id}`,
+        url: `${siteUrl}/nutrition/foods/${id}`,
       },
       twitter: {
         card: "summary_large_image",
@@ -67,7 +68,7 @@ export async function generateMetadata({
       title: `${food.name} | NutriSense AI`,
       description,
       type: "website",
-      url: `${siteUrl}/nutrition/foods/${params.id}`,
+      url: `${siteUrl}/nutrition/foods/${id}`,
     },
     twitter: {
       card: "summary_large_image",
@@ -83,7 +84,17 @@ export async function generateMetadata({
 export default function FoodDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  return <FoodDetailPageClient id={params.id} />;
+  const idPromise = params;
+  return <FoodDetailPageLoader idPromise={idPromise} />;
+}
+
+async function FoodDetailPageLoader({
+  idPromise,
+}: {
+  idPromise: Promise<{ id: string }>;
+}) {
+  const { id } = await idPromise;
+  return <FoodDetailPageClient id={id} />;
 }

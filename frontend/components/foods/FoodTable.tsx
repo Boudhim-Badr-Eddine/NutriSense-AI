@@ -63,6 +63,9 @@ export const FoodTable = ({ foods, highlightColumn }: FoodTableProps) => {
     });
   }, [foods, sortBy, sortOrder]);
 
+  const detailPath = (food: Food): string =>
+    `/nutrition/foods/${food.slug || food._id}`;
+
   return (
     <>
       <div className='hidden overflow-hidden rounded-lg border bg-white md:block'>
@@ -128,7 +131,7 @@ export const FoodTable = ({ foods, highlightColumn }: FoodTableProps) => {
           <Card
             key={food._id}
             className='cursor-pointer transition-shadow hover:shadow-md'
-            onClick={() => router.push(`/nutrition/foods/${food._id}`)}
+            onClick={() => router.push(detailPath(food))}
           >
             <CardHeader>
               <CardTitle className='text-lg'>{food.name}</CardTitle>

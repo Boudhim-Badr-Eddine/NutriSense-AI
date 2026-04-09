@@ -82,25 +82,41 @@ export const ComplementDetailPageClient = ({
           initial="initial"
           animate="animate"
         >
-          <div className="mb-4 flex items-start justify-between">
-            <div>
-              <Badge className="mb-2">{complement.category}</Badge>
-              <h1 className="mb-2 text-4xl font-bold text-gray-900">
-                {complement.name}
-              </h1>
+          <div className="flex flex-col lg:flex-row gap-8 items-start">
+            {complement.images?.[0] && (
+              <div className="w-full lg:w-[420px] sticky top-24">
+                <div className="rounded-2xl bg-gray-50 border border-gray-100 p-6 aspect-square flex items-center justify-center">
+                  <img
+                    src={complement.images[0]}
+                    alt={complement.name}
+                    className="object-contain max-w-full max-h-full drop-shadow-xl"
+                  />
+                </div>
+              </div>
+            )}
+
+            <div className="flex-1">
+              <div className="mb-4 flex items-start justify-between">
+                <div>
+                  <Badge className="mb-2">{complement.category}</Badge>
+                  <h1 className="mb-2 text-4xl font-bold text-gray-900">
+                    {complement.name}
+                  </h1>
+                </div>
+                <Button
+                  variant={isFavorited ? "default" : "outline"}
+                  size="lg"
+                  onClick={handleFavoriteClick}
+                >
+                  <Heart
+                    className={`mr-2 h-5 w-5 ${isFavorited ? "fill-white" : ""}`}
+                  />
+                  {isFavorited ? "Favorited" : "Add to Favorites"}
+                </Button>
+              </div>
+              <p className="text-lg text-gray-600">{complement.description}</p>
             </div>
-            <Button
-              variant={isFavorited ? "default" : "outline"}
-              size="lg"
-              onClick={handleFavoriteClick}
-            >
-              <Heart
-                className={`mr-2 h-5 w-5 ${isFavorited ? "fill-white" : ""}`}
-              />
-              {isFavorited ? "Favorited" : "Add to Favorites"}
-            </Button>
           </div>
-          <p className="text-lg text-gray-600">{complement.description}</p>
         </motion.div>
 
         <motion.div

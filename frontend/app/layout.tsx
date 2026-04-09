@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import dynamic from "next/dynamic";
 import { Inter } from "next/font/google";
 
+import { ChatWidgetLoader } from "@/components/layout/ChatWidgetLoader";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { AuthProvider } from "./AuthContext";
@@ -11,14 +11,6 @@ import { Providers } from "./providers";
 const inter = Inter({
   subsets: ["latin"],
 });
-
-const ChatWidget = dynamic(
-  () => import("@/components/chat/ChatWidget").then((mod) => mod.ChatWidget),
-  {
-    ssr: false,
-    loading: () => null,
-  },
-);
 
 export const metadata: Metadata = {
   title: {
@@ -41,7 +33,7 @@ export default function RootLayout({
             <Navbar />
             <main className="min-h-screen">{children}</main>
             <Footer />
-            <ChatWidget />
+            <ChatWidgetLoader />
           </AuthProvider>
         </Providers>
       </body>

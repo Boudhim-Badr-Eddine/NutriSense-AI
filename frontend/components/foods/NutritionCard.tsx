@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { LucideIcon } from "lucide-react";
+import { Beef, Droplet, Wheat } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
@@ -18,9 +18,15 @@ interface NutritionCardProps {
   title: string;
   description: string;
   href: string;
-  icon: LucideIcon;
+  icon: "protein" | "carbs" | "fats";
   toneClass: string;
 }
+
+const iconMap = {
+  protein: Beef,
+  carbs: Wheat,
+  fats: Droplet,
+};
 
 /**
  * WHY: Reuse a bold CTA card layout across nutrition entry points.
@@ -29,9 +35,11 @@ export const NutritionCard = ({
   title,
   description,
   href,
-  icon: Icon,
+  icon,
   toneClass,
 }: NutritionCardProps) => {
+  const Icon = iconMap[icon];
+
   return (
     <motion.div
       variants={fadeIn}

@@ -21,6 +21,7 @@ export const FoodTableRow = ({
   highlightColumn,
 }: FoodTableRowProps) => {
   const router = useRouter();
+  const detailPath = `/nutrition/foods/${food.slug || food._id}`;
 
   const proteinCalRatio =
     food.per100g.calories > 0
@@ -30,10 +31,20 @@ export const FoodTableRow = ({
   return (
     <TableRow
       className="cursor-pointer transition-colors hover:bg-gray-50"
-      onClick={() => router.push(`/nutrition/foods/${food._id}`)}
+      onClick={() => router.push(detailPath)}
     >
       <TableCell className="font-medium">
         <div className="flex items-center gap-2">
+          {food.image && (
+            <div className="w-12 h-12 rounded-lg bg-gray-50 flex items-center justify-center overflow-hidden">
+              <img
+                src={food.image}
+                alt={food.name}
+                className="w-full h-full object-contain p-1"
+                loading="lazy"
+              />
+            </div>
+          )}
           {index < 3 && (
             <Badge variant={index === 0 ? "default" : "secondary"}>
               #{index + 1}

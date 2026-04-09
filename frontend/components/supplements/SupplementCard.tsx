@@ -28,6 +28,8 @@ export const SupplementCard = ({
   onFavoriteClick,
   isFavorited,
 }: SupplementCardProps) => {
+  const detailPath = `/supplements/${supplement.slug || supplement._id}`;
+
   return (
     <motion.div
       variants={fadeIn}
@@ -35,7 +37,18 @@ export const SupplementCard = ({
       animate="animate"
       whileHover={{ y: -5, transition: { duration: 0.2 } }}
     >
-      <Card className="flex h-full flex-col transition-shadow hover:shadow-lg">
+      <Card className="group flex h-full flex-col overflow-hidden border-slate-200 transition-shadow hover:shadow-xl">
+        {supplement.images?.[0] && (
+          <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-50 p-3">
+            <img
+              src={supplement.images[0]}
+              alt={supplement.name}
+              className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105"
+              loading="lazy"
+            />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/35 to-transparent" />
+          </div>
+        )}
         <CardHeader>
           <div className="flex items-start justify-between">
             <Badge variant="secondary" className="mb-2">
@@ -84,7 +97,7 @@ export const SupplementCard = ({
           </div>
         </CardContent>
         <CardFooter>
-          <Link href={`/supplements/${supplement._id}`} className="w-full">
+          <Link href={detailPath} className="w-full">
             <Button className="w-full" variant="default">
               View Details <ArrowRight className="ml-2 h-4 w-4" />
             </Button>

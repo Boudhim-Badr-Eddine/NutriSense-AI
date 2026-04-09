@@ -32,7 +32,7 @@ export const SupplementGrid = ({
       variants={staggerContainer}
       initial="initial"
       animate="animate"
-      className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
+      className="grid items-stretch grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
     >
       {supplements.map((supplement) => (
         <SupplementCard

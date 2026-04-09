@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 
-import { Beef, Droplet, Wheat } from 'lucide-react';
-
 import { NutritionCard } from '@/components/foods/NutritionCard';
 import { Container } from '@/components/layout/Container';
 import { Card, CardContent } from '@/components/ui/card';
@@ -56,21 +54,21 @@ export default function NutritionGuidePage() {
             title='Top Protein Sources'
             description='Discover foods with the highest protein content per 100g.'
             href='/nutrition/proteins'
-            icon={Beef}
+            icon='protein'
             toneClass='bg-red-100 text-red-600'
           />
           <NutritionCard
             title='Top Carbohydrate Sources'
             description='Find the best energy sources for your active lifestyle.'
             href='/nutrition/carbs'
-            icon={Wheat}
+            icon='carbs'
             toneClass='bg-yellow-100 text-yellow-600'
           />
           <NutritionCard
             title='Top Healthy Fats'
             description='Explore sources of essential fatty acids and healthy fats.'
             href='/nutrition/fats'
-            icon={Droplet}
+            icon='fats'
             toneClass='bg-blue-100 text-blue-600'
           />
         </div>

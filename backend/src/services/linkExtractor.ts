@@ -51,7 +51,7 @@ const buildUrl = (source: LinkSource): string => {
 
 const hasWholeWord = (text: string, word: string): boolean => {
   const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const regex = new RegExp(`\b${escaped}\b`, "i");
+  const regex = new RegExp(`\\b${escaped}\\b`, "i");
   return regex.test(text);
 };
 

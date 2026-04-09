@@ -1,0 +1,23 @@
+{
+  "supplements": {
+    "whey-protein-isolate": [
+      "https://your-cdn.example/images/supplements/whey-isolate.jpg"
+    ],
+    "creatine-monohydrate": [
+      "https://your-cdn.example/images/supplements/creatine-monohydrate.jpg"
+    ]
+  },
+  "complements": {
+    "vitamin-d3": [
+      "https://your-cdn.example/images/complements/vitamin-d3.jpg"
+    ],
+    "coenzyme-q10": [
+      "https://your-cdn.example/images/complements/coq10.jpg"
+    ]
+  },
+  "foods": {
+    "chicken-breast": "https://your-cdn.example/images/foods/chicken-breast.jpg",
+    "salmon": "https://your-cdn.example/images/foods/salmon.jpg",
+    "tofu-firm": "https://your-cdn.example/images/foods/tofu-firm.jpg"
+  }
+}

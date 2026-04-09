@@ -34,9 +34,10 @@ const getSupplement = async (id: string): Promise<Supplement | null> => {
 export async function generateMetadata({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }): Promise<Metadata> {
-  const supplement = await getSupplement(params.id);
+  const { id } = await params;
+  const supplement = await getSupplement(id);
 
   if (!supplement) {
     return {
@@ -46,7 +47,7 @@ export async function generateMetadata({
         title: "Supplement Details | NutriSense AI",
         description: "Supplement benefits, usage, and research insights.",
         type: "website",
-        url: `${siteUrl}/supplements/${params.id}`,
+        url: `${siteUrl}/supplements/${id}`,
       },
       twitter: {
         card: "summary_large_image",
@@ -67,7 +68,7 @@ export async function generateMetadata({
       title: `${supplement.name} | NutriSense AI`,
       description,
       type: "website",
-      url: `${siteUrl}/supplements/${params.id}`,
+      url: `${siteUrl}/supplements/${id}`,
     },
     twitter: {
       card: "summary_large_image",
@@ -83,7 +84,17 @@ export async function generateMetadata({
 export default function SupplementDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  return <SupplementDetailPageClient id={params.id} />;
+  const idPromise = params;
+  return <SupplementDetailPageLoader idPromise={idPromise} />;
+}
+
+async function SupplementDetailPageLoader({
+  idPromise,
+}: {
+  idPromise: Promise<{ id: string }>;
+}) {
+  const { id } = await idPromise;
+  return <SupplementDetailPageClient id={id} />;
 }

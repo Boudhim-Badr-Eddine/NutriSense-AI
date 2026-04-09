@@ -1,12 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ExternalLink, Heart } from "lucide-react";
+import { ExternalLink, Heart, ImageIcon } from "lucide-react";
 
 import { useAuth } from "@/app/AuthContext";
 import { ErrorMessage } from "@/components/errors/ErrorMessage";
 import { NotFound } from "@/components/errors/NotFound";
-import { FoodCard } from "@/components/foods/FoodCard";
 import { MacroChart } from "@/components/foods/MacroChart";
 import { Container } from "@/components/layout/Container";
 import { DetailPageSkeleton } from "@/components/skeletons/DetailPageSkeleton";
@@ -65,47 +64,51 @@ export const FoodDetailPageClient = ({ id }: FoodDetailPageClientProps) => {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <Container>
-        <motion.div
-          className="mb-6 flex flex-wrap items-start justify-between gap-4"
-          variants={fadeIn}
-          initial="initial"
-          animate="animate"
-        >
-          <div>
-            <h1 className="mb-3 text-4xl font-bold text-gray-900">
-              {food.name}
-            </h1>
-            <div className="flex flex-wrap items-center gap-3">
-              <Badge variant="secondary">{food.category}</Badge>
-              {food.dietaryTags?.map((tag) => (
-                <Badge key={tag} variant="outline">
-                  {tag}
-                </Badge>
-              ))}
+        <motion.div variants={staggerContainer} initial="initial" animate="animate">
+          <div className="flex flex-col lg:flex-row gap-8 items-start">
+            <div className="w-full lg:w-[380px] shrink-0">
+              <div className="sticky top-24 rounded-2xl bg-gray-50 border border-gray-100 p-8 aspect-square flex items-center justify-center overflow-hidden">
+                {food.image ? (
+                  <img
+                    src={food.image}
+                    alt={food.name}
+                    className="max-w-full max-h-full object-contain drop-shadow-lg"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-gray-300">
+                    <ImageIcon className="w-24 h-24" />
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-          <Button
-            variant={isFavorited ? "default" : "outline"}
-            size="lg"
-            onClick={handleFavoriteClick}
-          >
-            <Heart
-              className={`mr-2 h-5 w-5 ${isFavorited ? "fill-white" : ""}`}
-            />
-            {isFavorited ? "Favorited" : "Add to Favorites"}
-          </Button>
-        </motion.div>
 
-        <motion.div
-          className="grid grid-cols-1 gap-6 lg:grid-cols-3"
-          variants={staggerContainer}
-          initial="initial"
-          animate="animate"
-        >
-          <motion.div variants={fadeIn} className="lg:col-span-1">
-            <FoodCard food={food} />
-          </motion.div>
-          <motion.div variants={fadeIn} className="space-y-6 lg:col-span-2">
+            <motion.div variants={fadeIn} className="flex-1 min-w-0 space-y-6">
+              <div className="flex flex-wrap items-start justify-between gap-4">
+                <div>
+                  <h1 className="mb-3 text-4xl font-bold text-gray-900">
+                    {food.name}
+                  </h1>
+                  <div className="flex flex-wrap items-center gap-3">
+                    <Badge variant="secondary">{food.category}</Badge>
+                    {food.dietaryTags?.map((tag) => (
+                      <Badge key={tag} variant="outline">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+                <Button
+                  variant={isFavorited ? "default" : "outline"}
+                  size="lg"
+                  onClick={handleFavoriteClick}
+                >
+                  <Heart
+                    className={`mr-2 h-5 w-5 ${isFavorited ? "fill-white" : ""}`}
+                  />
+                  {isFavorited ? "Favorited" : "Add to Favorites"}
+                </Button>
+              </div>
+
             <Card>
               <CardHeader>
                 <CardTitle>Macro Distribution</CardTitle>
@@ -142,7 +145,8 @@ export const FoodDetailPageClient = ({ id }: FoodDetailPageClientProps) => {
                 </div>
               </CardContent>
             </Card>
-          </motion.div>
+            </motion.div>
+          </div>
         </motion.div>
 
         <motion.div

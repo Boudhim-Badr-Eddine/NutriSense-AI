@@ -34,9 +34,10 @@ const getComplement = async (id: string): Promise<Complement | null> => {
 export async function generateMetadata({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }): Promise<Metadata> {
-  const complement = await getComplement(params.id);
+  const { id } = await params;
+  const complement = await getComplement(id);
 
   if (!complement) {
     return {
@@ -46,7 +47,7 @@ export async function generateMetadata({
         title: "Complement Details | NutriSense AI",
         description: "Complement benefits, sources, and usage guidance.",
         type: "website",
-        url: `${siteUrl}/complements/${params.id}`,
+        url: `${siteUrl}/complements/${id}`,
       },
       twitter: {
         card: "summary_large_image",
@@ -67,7 +68,7 @@ export async function generateMetadata({
       title: `${complement.name} | NutriSense AI`,
       description,
       type: "website",
-      url: `${siteUrl}/complements/${params.id}`,
+      url: `${siteUrl}/complements/${id}`,
     },
     twitter: {
       card: "summary_large_image",
@@ -83,7 +84,17 @@ export async function generateMetadata({
 export default function ComplementDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  return <ComplementDetailPageClient id={params.id} />;
+  const idPromise = params;
+  return <ComplementDetailPageLoader idPromise={idPromise} />;
+}
+
+async function ComplementDetailPageLoader({
+  idPromise,
+}: {
+  idPromise: Promise<{ id: string }>;
+}) {
+  const { id } = await idPromise;
+  return <ComplementDetailPageClient id={id} />;
 }

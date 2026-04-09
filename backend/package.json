@@ -7,7 +7,13 @@
     "dev": "nodemon --exec ts-node src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "lint": "eslint src/**/*.ts"
+    "lint": "eslint src/**/*.ts",
+    "test:smoke": "node scripts/smokeTest.js",
+    "seed:enrich": "ts-node src/scripts/enrichData.ts",
+    "seed:supplements": "ts-node src/scripts/seedSupplements.ts",
+    "seed:complements": "ts-node src/scripts/seedComplements.ts",
+    "images:apply": "ts-node src/scripts/applyImageMap.ts",
+    "images:cloudinary": "ts-node src/scripts/switchImagesToCloudinary.ts"
   },
   "engines": {
     "node": ">=20.0.0"

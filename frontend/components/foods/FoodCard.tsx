@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { Food } from "@/types";
@@ -15,12 +13,11 @@ export const FoodCard = ({ food }: FoodCardProps) => {
   return (
     <Card className="overflow-hidden">
       {food.image && (
-        <div className="relative h-48 w-full">
-          <Image
+        <div className="w-12 h-12 rounded-lg bg-gray-50 flex items-center justify-center overflow-hidden">
+          <img
             src={food.image}
             alt={food.name}
-            fill
-            className="object-cover"
+            className="w-full h-full object-contain p-1"
           />
         </div>
       )}
