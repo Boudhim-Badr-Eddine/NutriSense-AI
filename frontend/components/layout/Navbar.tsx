@@ -1,7 +1,8 @@
 "use client";
 
-import { Menu } from "lucide-react";
+import { Menu, ShoppingCart } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 import { useAuth } from "@/app/AuthContext";
 import { Container } from "@/components/layout/Container";
@@ -29,16 +30,25 @@ const navLinks = [
 ];
 
 /**
- * WHY: Provide a consistent navigation bar with auth state handling.
+ * WHY: Provide a consistent navigation bar with auth state handling and scroll-aware styling.
  */
 export const Navbar = () => {
   const { user, logout } = useAuth();
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 8);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur">
+    <header
+      className={`sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur transition-shadow duration-300 ${scrolled ? "shadow-md" : "shadow-none"}`}
+    >
       <Container>
         <div className="flex h-16 items-center justify-between gap-4">
-          <Link href="/" className="text-lg font-semibold text-slate-900">
+          <Link href="/" className="text-lg font-bold text-slate-900">
             NutriSense AI
           </Link>
 
@@ -55,6 +65,11 @@ export const Navbar = () => {
           </nav>
 
           <div className="hidden items-center gap-3 md:flex">
+            {/* Cart icon placeholder */}
+            <Button variant="ghost" size="icon" aria-label="Shopping cart" disabled>
+              <ShoppingCart className="h-5 w-5 text-slate-500" />
+            </Button>
+
             {!user ? (
               <>
                 <Button variant="ghost" asChild>
@@ -90,7 +105,7 @@ export const Navbar = () => {
                 <Menu className="h-5 w-5" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-72">
+            <SheetContent side="left" className="w-72 transition-transform duration-300">
               <SheetHeader>
                 <SheetTitle>Menu</SheetTitle>
               </SheetHeader>
