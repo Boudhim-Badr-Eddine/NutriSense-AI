@@ -95,18 +95,13 @@ export const Footer = () => {
             <h3 className="text-sm font-semibold uppercase tracking-wider text-white">
               Company
             </h3>
-            <ul className="space-y-2 text-sm">
-              {[
-                { label: "About Us", href: "/about" },
-                { label: "Blog", href: "/blog" },
-                { label: "FAQ", href: "/faq" },
-                { label: "Terms of Service", href: "/terms" },
-                { label: "Privacy Policy", href: "/privacy" },
-              ].map(({ label, href }) => (
-                <li key={label}>
-                  <Link href={href} className="transition hover:text-emerald-400">
-                    {label}
-                  </Link>
+            <ul className="space-y-2.5 text-sm">
+              {["About Us", "Blog", "FAQ", "Terms of Service", "Privacy Policy"].map((label) => (
+                <li key={label} className="flex items-center justify-between gap-3">
+                  <span className="text-slate-400">{label}</span>
+                  <span className="rounded-full border border-slate-700 px-2 py-0.5 text-[10px] uppercase tracking-wide text-slate-500">
+                    Coming soon
+                  </span>
                 </li>
               ))}
             </ul>

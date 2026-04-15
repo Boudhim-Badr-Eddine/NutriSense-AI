@@ -23,7 +23,7 @@ const steps = [
     step: "02",
     title: "Ask the AI",
     description:
-      "Use the AI-powered chat assistant to get instant, personalised guidance on dosing, stacking, and product selection for your goals.",
+      "Use the AI-powered chat assistant to get instant, personalized guidance on dosing, stacking, and product selection for your goals.",
     icon: MessageSquare,
     iconBg: "from-blue-400 to-sky-500",
     ringColor: "ring-blue-200",
