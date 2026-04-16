@@ -37,7 +37,7 @@ export const useToggleComplementFavorite = () => {
     mutationFn: complementsApi.toggleFavorite,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["complements"] });
-      void getProfile();
+      getProfile().catch((err) => console.error("Failed to refresh user profile after complement favorite toggle:", err));
     },
   });
 };

@@ -28,7 +28,7 @@ export const useToggleFavorite = () => {
     mutationFn: supplementsApi.toggleFavorite,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["supplements"] });
-      void getProfile();
+      getProfile().catch((err) => console.error("Failed to refresh user profile after supplement favorite toggle:", err));
     },
   });
 };
