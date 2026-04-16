@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import type { ApiResponse, Complement } from "@/types";
 import { ComplementDetailPageClient } from "./ComplementDetailPageClient";
 
+// WHY: These fetches run server-side only (generateMetadata). BACKEND_URL is a
+// server-only env var used here so the proxy default stays consistent.
 const baseUrl =
   process.env.NEXT_PUBLIC_API_URL ??
   `${process.env.BACKEND_URL ?? "http://localhost:5000"}/api`;
