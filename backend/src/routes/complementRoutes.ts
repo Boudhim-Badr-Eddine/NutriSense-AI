@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import * as controller from "../controllers/complementController";
+import { authenticate } from "../middleware/auth";
 import { validate } from "../middleware/validate";
 import * as schemas from "../validators/complementSchemas";
 
@@ -19,6 +20,10 @@ router.get(
 );
 router.get("/category/:category", controller.getComplementsByCategory);
 router.get("/:id", controller.getComplement);
+
+// Protected routes
+router.post("/:id/favorite", authenticate, controller.toggleFavorite);
+
 router.post(
   "/",
   validate(schemas.createComplementSchema),

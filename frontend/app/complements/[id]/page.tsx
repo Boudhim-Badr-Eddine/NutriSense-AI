@@ -81,20 +81,11 @@ export async function generateMetadata({
 /**
  * WHY: Export SEO metadata and render the complement detail experience.
  */
-export default function ComplementDetailPage({
+export default async function ComplementDetailPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const idPromise = params;
-  return <ComplementDetailPageLoader idPromise={idPromise} />;
-}
-
-async function ComplementDetailPageLoader({
-  idPromise,
-}: {
-  idPromise: Promise<{ id: string }>;
-}) {
-  const { id } = await idPromise;
+  const { id } = await params;
   return <ComplementDetailPageClient id={id} />;
 }
