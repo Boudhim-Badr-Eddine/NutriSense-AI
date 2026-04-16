@@ -2,6 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
+import { useAuth } from "@/app/AuthContext";
 import { complementsApi, GetComplementsParams } from "@/lib/complements";
 
 /**
@@ -27,14 +28,16 @@ export const useComplement = (id: string) => {
 };
 
 /**
- * WHY: Toggle a complement favorite and refresh cached lists.
+ * WHY: Toggle a complement favorite and refresh cached lists and user profile.
  */
 export const useToggleComplementFavorite = () => {
   const queryClient = useQueryClient();
+  const { getProfile } = useAuth();
   return useMutation({
     mutationFn: complementsApi.toggleFavorite,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["complements"] });
+      void getProfile();
     },
   });
 };

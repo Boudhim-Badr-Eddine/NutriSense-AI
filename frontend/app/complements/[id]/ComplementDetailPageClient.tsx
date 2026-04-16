@@ -40,14 +40,17 @@ export const ComplementDetailPageClient = ({
   const { data: complement, isLoading, error } = useComplement(id);
   const toggleFavorite = useToggleComplementFavorite();
 
-  const isFavorited = user?.favorites?.complements?.includes(id);
+  const isFavorited = complement
+    ? (user?.favorites?.complements?.includes(complement._id) ?? false)
+    : false;
 
   const handleFavoriteClick = () => {
     if (!user) {
       alert("Please login to add favorites");
       return;
     }
-    toggleFavorite.mutate(id);
+    if (!complement) return;
+    toggleFavorite.mutate(complement._id);
   };
 
   if (isLoading) {

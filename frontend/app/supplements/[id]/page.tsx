@@ -81,20 +81,11 @@ export async function generateMetadata({
 /**
  * WHY: Export SEO metadata and render the supplement detail experience.
  */
-export default function SupplementDetailPage({
+export default async function SupplementDetailPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const idPromise = params;
-  return <SupplementDetailPageLoader idPromise={idPromise} />;
-}
-
-async function SupplementDetailPageLoader({
-  idPromise,
-}: {
-  idPromise: Promise<{ id: string }>;
-}) {
-  const { id } = await idPromise;
+  const { id } = await params;
   return <SupplementDetailPageClient id={id} />;
 }

@@ -36,14 +36,17 @@ export const SupplementDetailPageClient = ({
   const { data: supplement, isLoading, error } = useSupplement(id);
   const toggleFavorite = useToggleFavorite();
 
-  const isFavorited = user?.favorites?.supplements?.includes(id);
+  const isFavorited = supplement
+    ? (user?.favorites?.supplements?.includes(supplement._id) ?? false)
+    : false;
 
   const handleFavoriteClick = () => {
     if (!user) {
       alert("Please login to add favorites");
       return;
     }
-    toggleFavorite.mutate(id);
+    if (!supplement) return;
+    toggleFavorite.mutate(supplement._id);
   };
 
   if (isLoading) {
