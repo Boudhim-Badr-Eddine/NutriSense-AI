@@ -4,7 +4,8 @@ import type { ApiResponse, Complement } from "@/types";
 import { ComplementDetailPageClient } from "./ComplementDetailPageClient";
 
 const baseUrl =
-  process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5000/api";
+  process.env.NEXT_PUBLIC_API_URL ??
+  `${process.env.BACKEND_URL ?? "http://localhost:5000"}/api`;
 const siteUrl = "https://nutrisense-ai.com";
 
 const clampDescription = (text: string, maxLength = 160): string => {

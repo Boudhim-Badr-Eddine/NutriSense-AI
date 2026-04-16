@@ -41,7 +41,7 @@ export const ComplementsPageClient = () => {
     limit: 12,
   };
 
-  const { data, isLoading, error } = useComplements(queryParams);
+  const { data, isLoading, error, refetch } = useComplements(queryParams);
   const toggleFavorite = useToggleComplementFavorite();
 
   const handleFavoriteClick = (id: string) => {
@@ -89,7 +89,10 @@ export const ComplementsPageClient = () => {
             {isLoading && <CardGridSkeleton />}
 
             {error && (
-              <ErrorMessage message="Error loading complements. Please try again." />
+              <ErrorMessage
+                message="Error loading complements. Please try again."
+                onRetry={() => void refetch()}
+              />
             )}
 
             {data && !isLoading && data.data.length === 0 && (

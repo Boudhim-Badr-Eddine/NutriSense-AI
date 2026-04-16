@@ -44,7 +44,7 @@ export const SupplementsPageClient = () => {
     limit: 12,
   };
 
-  const { data, isLoading, error } = useSupplements(queryParams);
+  const { data, isLoading, error, refetch } = useSupplements(queryParams);
   const toggleFavorite = useToggleFavorite();
 
   const handleFavoriteClick = (id: string) => {
@@ -92,7 +92,10 @@ export const SupplementsPageClient = () => {
             {isLoading && <CardGridSkeleton />}
 
             {error && (
-              <ErrorMessage message="Error loading supplements. Please try again." />
+              <ErrorMessage
+                message="Error loading supplements. Please try again."
+                onRetry={() => void refetch()}
+              />
             )}
 
             {data && !isLoading && data.data.length === 0 && (
