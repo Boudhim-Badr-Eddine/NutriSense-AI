@@ -56,7 +56,7 @@ export const LoginPageClient = () => {
     setIsSubmitting(true);
     try {
       await login(formState.email, formState.password);
-      router.push("/");
+      router.push("/chat");
     } catch (err: unknown) {
       if (err instanceof AxiosError) {
         setError(err.response?.data?.error ?? "Unable to login.");
@@ -72,60 +72,63 @@ export const LoginPageClient = () => {
     <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-16">
       <motion.div variants={fadeIn} initial="initial" animate="animate">
         <Card className="w-full max-w-md border-slate-200 shadow-sm">
-        <CardHeader>
-          <CardTitle className="text-2xl">Welcome back</CardTitle>
-          <CardDescription>
-            Log in to access your personalized nutrition insights.
-          </CardDescription>
-        </CardHeader>
-        <form onSubmit={handleSubmit}>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                value={formState.email}
-                onChange={(event) => updateField("email", event.target.value)}
-                placeholder="you@example.com"
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                value={formState.password}
-                onChange={(event) =>
-                  updateField("password", event.target.value)
-                }
-                placeholder="••••••••"
-                required
-              />
-            </div>
-            {error && (
-              <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-600">
-                {error}
-              </p>
-            )}
-          </CardContent>
-          <CardFooter className="flex flex-col gap-4">
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
-              {isSubmitting && (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          <CardHeader>
+            <CardTitle className="text-2xl">Welcome back</CardTitle>
+            <CardDescription>
+              Log in to access your personalized nutrition insights.
+            </CardDescription>
+          </CardHeader>
+          <form onSubmit={handleSubmit}>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={formState.email}
+                  onChange={(event) => updateField("email", event.target.value)}
+                  placeholder="you@example.com"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  value={formState.password}
+                  onChange={(event) =>
+                    updateField("password", event.target.value)
+                  }
+                  placeholder="••••••••"
+                  required
+                />
+              </div>
+              {error && (
+                <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-600">
+                  {error}
+                </p>
               )}
-              Login
-            </Button>
-            <p className="text-sm text-slate-600">
-              Don&apos;t have an account?{" "}
-              <Link href="/register" className="font-semibold text-emerald-600">
-                Register
-              </Link>
-            </p>
-          </CardFooter>
-        </form>
-      </Card>
+            </CardContent>
+            <CardFooter className="flex flex-col gap-4">
+              <Button type="submit" className="w-full" disabled={isSubmitting}>
+                {isSubmitting && (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                )}
+                Login
+              </Button>
+              <p className="text-sm text-slate-600">
+                Don&apos;t have an account?{" "}
+                <Link
+                  href="/register"
+                  className="font-semibold text-emerald-600"
+                >
+                  Register
+                </Link>
+              </p>
+            </CardFooter>
+          </form>
+        </Card>
       </motion.div>
     </div>
   );

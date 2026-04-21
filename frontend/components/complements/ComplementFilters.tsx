@@ -1,7 +1,7 @@
 "use client";
 
 import { Filter, Search, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -54,6 +54,7 @@ const sortOptions = [
 export const ComplementFilters = ({
   onFilterChange,
 }: ComplementFiltersProps) => {
+  const onFilterChangeRef = useRef(onFilterChange);
   const [filters, setFilters] = useState<ComplementFilterValues>({
     search: "",
     category: "all",
@@ -61,12 +62,16 @@ export const ComplementFilters = ({
   });
 
   useEffect(() => {
+    onFilterChangeRef.current = onFilterChange;
+  }, [onFilterChange]);
+
+  useEffect(() => {
     const timer = setTimeout(() => {
-      onFilterChange(filters);
+      onFilterChangeRef.current(filters);
     }, 300);
 
     return () => clearTimeout(timer);
-  }, [filters, onFilterChange]);
+  }, [filters]);
 
   const handleReset = () => {
     setFilters({

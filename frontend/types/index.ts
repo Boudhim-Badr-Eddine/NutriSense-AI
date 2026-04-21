@@ -56,6 +56,7 @@ export interface Supplement {
   images: string[];
   goals: string[];
   popularity: number;
+  price?: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -93,6 +94,7 @@ export interface Complement {
   interactions: string[];
   contraindications: string[];
   images: string[];
+  price?: number;
   createdAt: string;
   updatedAt: string;
 }

@@ -1,7 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, LayoutDashboard, Lightbulb, MessageSquare } from "lucide-react";
+import {
+  ArrowRight,
+  LayoutDashboard,
+  Lightbulb,
+  MessageSquare,
+} from "lucide-react";
 import Link from "next/link";
 
 import { Container } from "@/components/layout/Container";
@@ -15,9 +20,9 @@ const steps = [
     description:
       "Explore our curated catalog of sports supplements, dietary complements, vitamins, and nutrition data — all backed by scientific evidence.",
     icon: LayoutDashboard,
-    iconBg: "from-emerald-400 to-teal-500",
-    ringColor: "ring-emerald-200",
-    numColor: "text-emerald-600",
+    iconBg: "from-sky-500 to-cyan-500",
+    ringColor: "ring-sky-200",
+    numColor: "text-sky-700",
   },
   {
     step: "02",
@@ -25,9 +30,9 @@ const steps = [
     description:
       "Use the AI-powered chat assistant to get instant, personalized guidance on dosing, stacking, and product selection for your goals.",
     icon: MessageSquare,
-    iconBg: "from-blue-400 to-sky-500",
-    ringColor: "ring-blue-200",
-    numColor: "text-blue-600",
+    iconBg: "from-indigo-500 to-blue-500",
+    ringColor: "ring-indigo-200",
+    numColor: "text-indigo-700",
   },
   {
     step: "03",
@@ -35,9 +40,9 @@ const steps = [
     description:
       "Receive tailored recommendations, safety checks, and next-step action plans so you can move forward with total confidence.",
     icon: Lightbulb,
-    iconBg: "from-amber-400 to-orange-500",
+    iconBg: "from-orange-500 to-amber-500",
     ringColor: "ring-amber-200",
-    numColor: "text-amber-600",
+    numColor: "text-amber-700",
   },
 ];
 
@@ -47,7 +52,11 @@ const steps = [
 export const HowItWorksSection = () => {
   return (
     <motion.section
-      className="relative overflow-hidden bg-slate-50 py-28"
+      className="relative overflow-hidden py-28"
+      style={{
+        background:
+          "linear-gradient(180deg, rgba(233,245,255,1) 0%, rgba(241,249,255,0.96) 45%, rgba(255,248,241,0.96) 100%)",
+      }}
       variants={fadeIn}
       initial="initial"
       whileInView="animate"
@@ -55,14 +64,23 @@ export const HowItWorksSection = () => {
     >
       {/* Subtle background decoration */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,rgba(16,185,129,0.05)_0%,transparent_60%)]" />
+        <motion.div
+          className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,rgba(14,165,233,0.11)_0%,transparent_62%)]"
+          animate={{ opacity: [0.35, 0.55, 0.35] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute -right-20 top-12 h-80 w-80 rounded-full bg-sky-300/20 blur-3xl"
+          animate={{ x: [0, -20, 0], y: [0, 14, 0] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        />
       </div>
 
       <Container className="relative">
         <div className="mb-16 text-center">
           <motion.p
             variants={fadeIn}
-            className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-emerald-600"
+            className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-sky-700"
           >
             Simple Process
           </motion.p>
@@ -89,7 +107,7 @@ export const HowItWorksSection = () => {
         >
           {/* Connecting line — desktop only */}
           <div
-            className="absolute top-16 left-[calc(16.67%+2rem)] right-[calc(16.67%+2rem)] hidden h-0.5 bg-gradient-to-r from-emerald-200 via-blue-200 to-amber-200 md:block"
+            className="absolute top-16 left-[calc(16.67%+2rem)] right-[calc(16.67%+2rem)] hidden h-0.5 bg-gradient-to-r from-sky-200 via-indigo-200 to-amber-200 md:block"
             aria-hidden="true"
           />
 
@@ -99,6 +117,7 @@ export const HowItWorksSection = () => {
               <motion.div
                 key={step.step}
                 variants={fadeIn}
+                whileHover={{ y: -8, transition: { duration: 0.22 } }}
                 className="relative flex flex-col items-center text-center"
               >
                 {/* Step circle */}
@@ -116,7 +135,7 @@ export const HowItWorksSection = () => {
                 </div>
 
                 {/* Card */}
-                <div className="w-full rounded-2xl border border-slate-200 bg-white p-7 shadow-sm transition-shadow duration-300 hover:shadow-lg">
+                <div className="w-full rounded-2xl border border-sky-200/50 bg-white/90 p-7 shadow-sm backdrop-blur-sm transition-shadow duration-300 hover:shadow-xl">
                   <h3 className="text-xl font-bold text-slate-900">
                     {step.title}
                   </h3>
@@ -135,13 +154,10 @@ export const HowItWorksSection = () => {
         </motion.div>
 
         {/* CTA */}
-        <motion.div
-          variants={fadeIn}
-          className="mt-16 flex justify-center"
-        >
+        <motion.div variants={fadeIn} className="mt-16 flex justify-center">
           <Button
             size="lg"
-            className="rounded-full bg-gradient-to-r from-emerald-500 to-teal-600 px-10 font-semibold shadow-lg hover:from-emerald-600 hover:to-teal-700"
+            className="rounded-full bg-gradient-to-r from-sky-500 to-indigo-600 px-10 font-semibold shadow-lg hover:from-sky-600 hover:to-indigo-700"
             asChild
           >
             <Link href="/supplements">
