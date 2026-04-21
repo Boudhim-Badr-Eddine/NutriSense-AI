@@ -27,6 +27,19 @@ const navLinks = [
   { label: "Supplements", href: "/supplements" },
   { label: "Complements", href: "/complements" },
   { label: "Nutrition Guide", href: "/nutrition" },
+  { label: "Symptom Checker", href: "/symptom-checker" },
+  {
+    label: "Stack Builder",
+    href: "/stack-builder",
+    badge: "AI",
+    badgeClassName: "text-xs bg-purple-500 text-white px-1.5 py-0.5 rounded-full ml-1",
+  },
+  {
+    label: "Meal Analyzer",
+    href: "/meal-analyzer",
+    badge: "Vision AI",
+    badgeClassName: "text-xs bg-orange-500 text-white px-1.5 py-0.5 rounded-full ml-1",
+  },
 ];
 
 /**
@@ -61,6 +74,16 @@ export const Navbar = () => {
                 className="text-sm font-medium text-slate-600 transition-colors hover:text-slate-900"
               >
                 {link.label}
+                {link.badge ? (
+                  <span
+                    className={
+                      link.badgeClassName ??
+                      "text-xs bg-purple-500 text-white px-1.5 py-0.5 rounded-full ml-1"
+                    }
+                  >
+                    {link.badge}
+                  </span>
+                ) : null}
               </Link>
             ))}
           </nav>
@@ -118,6 +141,16 @@ export const Navbar = () => {
                       className="text-sm font-medium text-slate-700 transition-colors hover:text-slate-900"
                     >
                       {link.label}
+                      {link.badge ? (
+                        <span
+                          className={
+                            link.badgeClassName ??
+                            "text-xs bg-purple-500 text-white px-1.5 py-0.5 rounded-full ml-1"
+                          }
+                        >
+                          {link.badge}
+                        </span>
+                      ) : null}
                     </Link>
                   </SheetClose>
                 ))}

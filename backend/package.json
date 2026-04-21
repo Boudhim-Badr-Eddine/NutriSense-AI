@@ -12,6 +12,8 @@
     "seed:enrich": "ts-node src/scripts/enrichData.ts",
     "seed:supplements": "ts-node src/scripts/seedSupplements.ts",
     "seed:complements": "ts-node src/scripts/seedComplements.ts",
+    "seed:all": "ts-node src/scripts/seedAllData.ts",
+    "seed:catalog": "ts-node src/scripts/upsertCatalogData.ts",
     "images:apply": "ts-node src/scripts/applyImageMap.ts",
     "images:cloudinary": "ts-node src/scripts/switchImagesToCloudinary.ts"
   },
@@ -20,6 +22,7 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
+    "@types/multer": "^2.1.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
@@ -29,6 +32,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.6.0",
     "morgan": "^1.10.0",
+    "multer": "^2.1.1",
     "slugify": "^1.6.6"
   },
   "devDependencies": {
