@@ -1,13 +1,22 @@
 import { Request, Response } from "express";
+import { Types } from "mongoose";
 
 import {
   Complement,
   ComplementCategory,
   ComplementModel,
 } from "../models/Complement";
+import { User } from "../models/User";
 import { ApiError } from "../utils/ApiError";
 import { catchAsync } from "../utils/catchAsync";
 import * as handlerFactory from "../utils/handlerFactory";
+
+interface AuthenticatedRequest extends Request {
+  user?: {
+    id: string;
+    role?: "user" | "admin";
+  };
+}
 
 /**
  * WHY: Provide CRUD handlers via the shared factory.
@@ -17,6 +26,50 @@ export const getComplement = handlerFactory.getOne(Complement);
 export const createComplement = handlerFactory.createOne(Complement);
 export const updateComplement = handlerFactory.updateOne(Complement);
 export const deleteComplement = handlerFactory.deleteOne(Complement);
+
+/**
+ * Toggle a complement in the authenticated user's favorites list.
+ * WHY: Supports UX for quick bookmarking without duplicate code.
+ */
+export const toggleFavorite = catchAsync(
+  async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+    const userId = req.user?.id;
+    const complementId = req.params.id;
+
+    if (!userId) {
+      throw ApiError.unauthorized("Authentication required");
+    }
+
+    if (!complementId || !Types.ObjectId.isValid(complementId)) {
+      throw ApiError.badRequest("Invalid complement id");
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      throw ApiError.notFound("User not found");
+    }
+
+    const favorites: Types.ObjectId[] = user.favorites.complements;
+    const alreadyFavorite = favorites.some((favorite) =>
+      favorite.equals(complementId),
+    );
+
+    if (alreadyFavorite) {
+      user.favorites.complements = favorites.filter(
+        (favorite) => !favorite.equals(complementId),
+      );
+    } else {
+      user.favorites.complements.push(new Types.ObjectId(complementId));
+    }
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      data: user,
+    });
+  },
+);
 
 const complementModel = Complement as unknown as ComplementModel;
 

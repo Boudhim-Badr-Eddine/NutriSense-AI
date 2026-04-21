@@ -1,7 +1,9 @@
 "use client";
 
-import { GetSupplementsParams, supplementsApi } from "@/lib/supplements";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import { useAuth } from "@/app/AuthContext";
+import { GetSupplementsParams, supplementsApi } from "@/lib/supplements";
 
 export const useSupplements = (params?: GetSupplementsParams) => {
   return useQuery({
@@ -21,10 +23,12 @@ export const useSupplement = (id: string) => {
 
 export const useToggleFavorite = () => {
   const queryClient = useQueryClient();
+  const { getProfile } = useAuth();
   return useMutation({
     mutationFn: supplementsApi.toggleFavorite,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["supplements"] });
+      getProfile().catch((err) => console.error("Failed to refresh user profile after supplement favorite toggle:", err));
     },
   });
 };

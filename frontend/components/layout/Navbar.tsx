@@ -246,6 +246,16 @@ export const Navbar = () => {
                 className={`rounded-full px-3 py-1.5 text-sm font-semibold transition-all ${pathname === link.href ? "bg-cyan-50 text-cyan-800" : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"}`}
               >
                 {link.label}
+                {link.badge ? (
+                  <span
+                    className={
+                      link.badgeClassName ??
+                      "text-xs bg-purple-500 text-white px-1.5 py-0.5 rounded-full ml-1"
+                    }
+                  >
+                    {link.badge}
+                  </span>
+                ) : null}
               </Link>
             ))}
           </nav>
