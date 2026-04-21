@@ -11,6 +11,13 @@ import { ApiError } from "../utils/ApiError";
 import { catchAsync } from "../utils/catchAsync";
 import * as handlerFactory from "../utils/handlerFactory";
 
+interface AuthenticatedRequest extends Request {
+  user?: {
+    id: string;
+    role?: "user" | "admin";
+  };
+}
+
 /**
  * WHY: Provide CRUD handlers via the shared factory.
  */
@@ -25,7 +32,7 @@ export const deleteComplement = handlerFactory.deleteOne(Complement);
  * WHY: Supports UX for quick bookmarking without duplicate code.
  */
 export const toggleFavorite = catchAsync(
-  async (req: Request, res: Response): Promise<void> => {
+  async (req: AuthenticatedRequest, res: Response): Promise<void> => {
     const userId = req.user?.id;
     const complementId = req.params.id;
 

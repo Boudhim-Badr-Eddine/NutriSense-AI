@@ -11,6 +11,17 @@ const nextConfig = {
     formats: ["image/webp", "image/avif"],
   },
   compress: true,
+  async rewrites() {
+    const apiProxyTarget =
+      process.env.API_PROXY_TARGET ?? "http://localhost:5000/api";
+
+    return [
+      {
+        source: "/api/:path*",
+        destination: `${apiProxyTarget}/:path*`,
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;
