@@ -124,4 +124,52 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Custom branded scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #10b981;
+    border-radius: 99px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #059669;
+  }
+
+  /* Professional selection highlight */
+  ::selection {
+    background-color: #10b981;
+    color: #ffffff;
+  }
+
+  /* Accessible focus-visible styles */
+  :focus-visible {
+    outline: 2px solid #10b981;
+    outline-offset: 3px;
+  }
 }
+
+@layer utilities {
+  /* Glass-morphism utility */
+  .glass {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.7);
+  }
+
+  .glass-dark {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: rgba(15, 23, 42, 0.7);
+  }
+}
+
