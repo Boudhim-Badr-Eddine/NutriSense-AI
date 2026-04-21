@@ -18,6 +18,10 @@ export const FoodCard = ({ food }: FoodCardProps) => {
             src={food.image}
             alt={food.name}
             className="w-full h-full object-contain p-1"
+            onError={(event) => {
+              event.currentTarget.onerror = null;
+              event.currentTarget.src = "/images/placeholders/food.svg";
+            }}
           />
         </div>
       )}

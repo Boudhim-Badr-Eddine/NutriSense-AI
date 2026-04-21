@@ -11,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { formatPrice, getComplementPrice } from "@/lib/productPricing";
 import type { Complement } from "@/types";
 
 interface ComplementCardProps {
@@ -28,6 +29,7 @@ export const ComplementCard = ({
   isFavorited,
 }: ComplementCardProps) => {
   const detailPath = `/complements/${complement.slug || complement._id}`;
+  const priceLabel = formatPrice(getComplementPrice(complement));
 
   return (
     <Card className="group flex h-full flex-col overflow-hidden border-slate-200 transition-shadow hover:shadow-xl">
@@ -38,6 +40,10 @@ export const ComplementCard = ({
             alt={complement.name}
             className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105"
             loading="lazy"
+            onError={(event) => {
+              event.currentTarget.onerror = null;
+              event.currentTarget.src = "/images/placeholders/product.svg";
+            }}
           />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/35 to-transparent" />
         </div>
@@ -63,6 +69,9 @@ export const ComplementCard = ({
           )}
         </div>
         <CardTitle className="line-clamp-2">{complement.name}</CardTitle>
+        <div className="text-base font-semibold text-emerald-700">
+          {priceLabel}
+        </div>
         <CardDescription className="line-clamp-3">
           {complement.description}
         </CardDescription>
@@ -90,7 +99,7 @@ export const ComplementCard = ({
       <CardFooter>
         <Link href={detailPath} className="w-full">
           <Button className="w-full">
-            View Details <ArrowRight className="ml-2 h-4 w-4" />
+            How to Use & Details <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </Link>
       </CardFooter>

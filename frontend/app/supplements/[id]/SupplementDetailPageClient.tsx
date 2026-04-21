@@ -8,9 +8,13 @@ import {
   ExternalLink,
   Heart,
   Pill,
+  ShoppingCart,
 } from "lucide-react";
+import Image from "next/image";
+import { useState } from "react";
 
 import { useAuth } from "@/app/AuthContext";
+import { useCart } from "@/app/CartContext";
 import { ErrorMessage } from "@/components/errors/ErrorMessage";
 import { NotFound } from "@/components/errors/NotFound";
 import { Container } from "@/components/layout/Container";
@@ -21,6 +25,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useSupplement, useToggleFavorite } from "@/hooks/useSupplements";
 import { fadeIn, staggerContainer } from "@/lib/animations";
 import { openChatWithQuestion } from "@/lib/chatUtils";
+import { formatPrice, getSupplementPrice } from "@/lib/productPricing";
 
 interface SupplementDetailPageClientProps {
   id: string;
@@ -33,11 +38,15 @@ export const SupplementDetailPageClient = ({
   id,
 }: SupplementDetailPageClientProps) => {
   const { user } = useAuth();
+  const { addItem } = useCart();
   const { data: supplement, isLoading, error } = useSupplement(id);
   const toggleFavorite = useToggleFavorite();
+  const [favoriteOverride, setFavoriteOverride] = useState<boolean | null>(
+    null,
+  );
 
-  const isFavorited = supplement
-    ? (user?.favorites?.supplements?.includes(supplement._id) ?? false)
+  const isFavorited = user
+    ? (favoriteOverride ?? Boolean(user?.favorites?.supplements?.includes(id)))
     : false;
 
   const handleFavoriteClick = () => {
@@ -45,8 +54,14 @@ export const SupplementDetailPageClient = ({
       alert("Please login to add favorites");
       return;
     }
-    if (!supplement) return;
-    toggleFavorite.mutate(supplement._id);
+
+    const nextIsFavorited = !isFavorited;
+    setFavoriteOverride(nextIsFavorited);
+    toggleFavorite.mutate(id, {
+      onError: () => {
+        setFavoriteOverride(!nextIsFavorited);
+      },
+    });
   };
 
   if (isLoading) {
@@ -72,6 +87,21 @@ export const SupplementDetailPageClient = ({
     return <NotFound resource="Supplement" />;
   }
 
+  const price = getSupplementPrice(supplement);
+
+  const handleAddToCart = () => {
+    addItem({
+      id: supplement._id,
+      type: "supplement",
+      name: supplement.name,
+      slug: supplement.slug,
+      image: supplement.images?.[0] ?? null,
+      price,
+      category: supplement.category,
+      detailPath: `/supplements/${supplement.slug || supplement._id}`,
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <Container>
@@ -83,35 +113,45 @@ export const SupplementDetailPageClient = ({
         >
           <div className="flex flex-col lg:flex-row gap-8 items-start">
             {supplement.images?.[0] && (
-              <div className="w-full lg:w-[420px] sticky top-24">
-                <div className="rounded-2xl bg-gray-50 border border-gray-100 p-6 aspect-square flex items-center justify-center">
-                  <img
-                    src={supplement.images[0]}
-                    alt={supplement.name}
-                    className="object-contain max-w-full max-h-full drop-shadow-xl"
-                  />
-                </div>
+              <div className="relative h-80 w-full overflow-hidden rounded-lg bg-white lg:w-[420px]">
+                <Image
+                  src={supplement.images[0]}
+                  alt={supplement.name}
+                  fill
+                  className="object-contain p-4"
+                  sizes="(min-width: 1024px) 420px, 100vw"
+                  priority
+                />
               </div>
             )}
 
             <div className="flex-1">
-              <div className="mb-4 flex items-start justify-between">
-                <div>
+              <div className="mb-4 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                <div className="min-w-0">
                   <Badge className="mb-2">{supplement.category}</Badge>
                   <h1 className="mb-2 text-4xl font-bold text-gray-900">
                     {supplement.name}
                   </h1>
+                  <p className="text-2xl font-bold text-emerald-700">
+                    {formatPrice(price)}
+                  </p>
                 </div>
-                <Button
-                  variant={isFavorited ? "default" : "outline"}
-                  size="lg"
-                  onClick={handleFavoriteClick}
-                >
-                  <Heart
-                    className={`mr-2 h-5 w-5 ${isFavorited ? "fill-white" : ""}`}
-                  />
-                  {isFavorited ? "Favorited" : "Add to Favorites"}
-                </Button>
+                <div className="flex w-full flex-col gap-3 sm:w-auto">
+                  <Button size="lg" onClick={handleAddToCart}>
+                    <ShoppingCart className="mr-2 h-5 w-5" />
+                    Add to Bag
+                  </Button>
+                  <Button
+                    variant={isFavorited ? "default" : "outline"}
+                    size="lg"
+                    onClick={handleFavoriteClick}
+                  >
+                    <Heart
+                      className={`mr-2 h-5 w-5 ${isFavorited ? "fill-white" : ""}`}
+                    />
+                    {isFavorited ? "Favorited" : "Add to Favorites"}
+                  </Button>
+                </div>
               </div>
               <p className="text-lg text-gray-600">{supplement.description}</p>
             </div>

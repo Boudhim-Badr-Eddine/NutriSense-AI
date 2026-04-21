@@ -1,29 +1,17 @@
 {
   "supplements": {
-    "bcaa-211": [
-      "/images/supplements/bcaa-211.png"
-    ],
+    "bcaa-211": ["/images/supplements/bcaa-211.png"],
     "beta-alanine-powder": [
-      "/images/supplements/beta-alanine-powder.jpg"
+      "https://supplementsmaroc.com/cdn/shop/files/Beta_Alanine_Powder_300_g_BioTech_USA.png?v=1728250037"
     ],
     "caffeine-beta-alanine-pre-workout": [
       "/images/supplements/caffeine-beta-alanine-pre-workout.jpg"
     ],
-    "casein-protein": [
-      "/images/supplements/casein-protein.jpg"
-    ],
-    "citrulline-malate-21": [
-      "/images/supplements/citrulline-malate-21.png"
-    ],
-    "collagen-peptides": [
-      "/images/supplements/collagen-peptides.jpg"
-    ],
-    "creatine-hcl": [
-      "/images/supplements/creatine-hcl.jpg"
-    ],
-    "creatine-monohydrate": [
-      "/images/supplements/creatine-monohydrate.jpg"
-    ],
+    "casein-protein": ["/images/supplements/casein-protein.jpg"],
+    "citrulline-malate-21": ["/images/supplements/citrulline-malate-21.png"],
+    "collagen-peptides": ["/images/supplements/collagen-peptides.jpg"],
+    "creatine-hcl": ["/images/supplements/creatine-hcl.jpg"],
+    "creatine-monohydrate": ["/images/supplements/creatine-monohydrate.jpg"],
     "eaa-essential-amino-acids": [
       "/images/supplements/eaa-essential-amino-acids.png"
     ],
@@ -39,86 +27,40 @@
     "l-carnitine-l-tartrate": [
       "/images/supplements/l-carnitine-l-tartrate.jpg"
     ],
-    "l-glutamine": [
-      "/images/supplements/l-glutamine.png"
-    ],
-    "magnesium-glycinate": [
-      "/images/supplements/magnesium-glycinate.png"
-    ],
-    "mass-gainer-complex": [
-      "/images/supplements/mass-gainer-complex.jpg"
-    ],
-    "no-booster": [
-      "/images/supplements/no-booster.jpg"
-    ],
-    "vegan-protein-blend": [
-      "/images/supplements/vegan-protein-blend.webp"
-    ],
+    "l-glutamine": ["/images/supplements/l-glutamine.png"],
+    "magnesium-glycinate": ["/images/supplements/magnesium-glycinate.png"],
+    "mass-gainer-complex": ["/images/supplements/mass-gainer-complex.jpg"],
+    "no-booster": ["/images/supplements/no-booster.jpg"],
+    "vegan-protein-blend": ["/images/supplements/vegan-protein-blend.webp"],
     "whey-protein-concentrate": [
       "/images/supplements/whey-protein-concentrate.jpg"
     ],
-    "whey-protein-isolate": [
-      "/images/supplements/whey-protein-isolate.jpg"
-    ],
-    "zma": [
-      "/images/supplements/zma.jpg"
-    ]
+    "whey-protein-isolate": ["/images/supplements/whey-protein-isolate.jpg"],
+    "zma": ["/images/supplements/zma.jpg"]
   },
   "complements": {
-    "alpha-lipoic-acid": [
-      "/images/complements/alpha-lipoic-acid.png"
-    ],
-    "ashwagandha": [
-      "/images/complements/ashwagandha.jpg"
-    ],
-    "calcium": [
-      "/images/complements/calcium.jpg"
-    ],
-    "coenzyme-q10": [
-      "/images/complements/coenzyme-q10.jpg"
-    ],
-    "iron": [
-      "/images/complements/iron.jpg"
-    ],
-    "magnesium": [
-      "/images/complements/magnesium.jpg"
-    ],
-    "multivitamin": [
-      "/images/complements/multivitamin.jpg"
-    ],
-    "n-acetyl-cysteine-nac": [
-      "/images/complements/n-acetyl-cysteine-nac.jpg"
-    ],
-    "omega-3-6-9": [
-      "/images/complements/omega-3-6-9.png"
-    ],
-    "omega-3-epa-dha": [
-      "/images/complements/omega-3-epa-dha.jpg"
-    ],
-    "rhodiola-rosea": [
-      "/images/complements/rhodiola-rosea.png"
-    ],
-    "selenium": [
-      "/images/complements/selenium.png"
-    ],
+    "alpha-lipoic-acid": ["/images/complements/alpha-lipoic-acid.png"],
+    "ashwagandha": ["/images/complements/ashwagandha.jpg"],
+    "calcium": ["/images/complements/calcium.jpg"],
+    "coenzyme-q10": ["/images/complements/coenzyme-q10.jpg"],
+    "iron": ["/images/complements/iron.jpg"],
+    "magnesium": ["/images/complements/magnesium.jpg"],
+    "magnesium-citrate": ["/images/complements/magnesium.jpg"],
+    "multivitamin": ["/images/complements/multivitamin.jpg"],
+    "n-acetyl-cysteine-nac": ["/images/complements/n-acetyl-cysteine-nac.jpg"],
+    "omega-3-6-9": ["/images/complements/omega-3-6-9.png"],
+    "omega-3-epa-dha": ["/images/complements/omega-3-epa-dha.jpg"],
+    "rhodiola-rosea": ["/images/complements/rhodiola-rosea.png"],
+    "selenium": ["/images/complements/selenium.png"],
     "vegan-algae-omega-3-dha": [
       "/images/complements/vegan-algae-omega-3-dha.jpg"
     ],
-    "vitamin-b-complex": [
-      "/images/complements/vitamin-b-complex.jpg"
-    ],
-    "vitamin-c": [
-      "/images/complements/vitamin-c.png"
-    ],
-    "vitamin-d3": [
-      "/images/complements/vitamin-d3.png"
-    ],
-    "vitamin-k2-mk-7": [
-      "/images/complements/vitamin-k2-mk-7.jpg"
-    ],
-    "zinc": [
-      "/images/complements/zinc.jpg"
-    ]
+    "vitamin-b-complex": ["/images/complements/vitamin-b-complex.jpg"],
+    "vitamin-b12": ["/images/complements/vitamin-b-complex.jpg"],
+    "vitamin-c": ["/images/complements/vitamin-c.png"],
+    "vitamin-d3": ["/images/complements/vitamin-d3.png"],
+    "vitamin-k2-mk-7": ["/images/complements/vitamin-k2-mk-7.jpg"],
+    "zinc": ["/images/complements/zinc.jpg"]
   },
   "foods": {
     "almonds": "/images/foods/almonds.jpg",

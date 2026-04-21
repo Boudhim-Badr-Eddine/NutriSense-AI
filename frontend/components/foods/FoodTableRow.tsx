@@ -42,6 +42,10 @@ export const FoodTableRow = ({
                 alt={food.name}
                 className="w-full h-full object-contain p-1"
                 loading="lazy"
+                onError={(event) => {
+                  event.currentTarget.onerror = null;
+                  event.currentTarget.src = "/images/placeholders/food.svg";
+                }}
               />
             </div>
           )}

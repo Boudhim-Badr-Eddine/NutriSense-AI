@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { ArrowRight, Heart } from "lucide-react";
 import Link from "next/link";
 
-import { fadeIn } from "@/lib/animations";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,6 +14,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { fadeIn } from "@/lib/animations";
+import { formatPrice, getSupplementPrice } from "@/lib/productPricing";
 import type { Supplement } from "@/types";
 
 interface SupplementCardProps {
@@ -29,6 +30,7 @@ export const SupplementCard = ({
   isFavorited,
 }: SupplementCardProps) => {
   const detailPath = `/supplements/${supplement.slug || supplement._id}`;
+  const priceLabel = formatPrice(getSupplementPrice(supplement));
 
   return (
     <motion.div
@@ -45,6 +47,10 @@ export const SupplementCard = ({
               alt={supplement.name}
               className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105"
               loading="lazy"
+              onError={(event) => {
+                event.currentTarget.onerror = null;
+                event.currentTarget.src = "/images/placeholders/product.svg";
+              }}
             />
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/35 to-transparent" />
           </div>
@@ -70,6 +76,9 @@ export const SupplementCard = ({
             )}
           </div>
           <CardTitle className="line-clamp-2">{supplement.name}</CardTitle>
+          <div className="text-base font-semibold text-emerald-700">
+            {priceLabel}
+          </div>
           <CardDescription className="line-clamp-3">
             {supplement.description}
           </CardDescription>
@@ -99,7 +108,7 @@ export const SupplementCard = ({
         <CardFooter>
           <Link href={detailPath} className="w-full">
             <Button className="w-full" variant="default">
-              View Details <ArrowRight className="ml-2 h-4 w-4" />
+              How to Use & Details <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </Link>
         </CardFooter>

@@ -2,7 +2,8 @@
 
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 
 import { useAuth } from "@/app/AuthContext";
 import {
@@ -26,12 +27,19 @@ import { fadeIn, staggerContainer } from "@/lib/animations";
  */
 export const ComplementsPageClient = () => {
   const { user } = useAuth();
+  const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [favoriteOverrides, setFavoriteOverrides] = useState<
+    Record<string, boolean>
+  >({});
   const [filters, setFilters] = useState<ComplementFilterValues>({
     search: "",
     category: "all",
     sort: "-createdAt",
   });
-  const [page, setPage] = useState(1);
+  const rawPage = Number.parseInt(searchParams.get("page") ?? "1", 10);
+  const page = Number.isNaN(rawPage) || rawPage < 1 ? 1 : rawPage;
 
   const queryParams = {
     search: filters.search || undefined,
@@ -44,18 +52,82 @@ export const ComplementsPageClient = () => {
   const { data, isLoading, error } = useComplements(queryParams);
   const toggleFavorite = useToggleComplementFavorite();
 
+  const favoritedIds = useMemo(() => {
+    const resolvedIds = new Set(user?.favorites?.complements || []);
+
+    Object.entries(favoriteOverrides).forEach(([id, isFavorited]) => {
+      if (isFavorited) {
+        resolvedIds.add(id);
+      } else {
+        resolvedIds.delete(id);
+      }
+    });
+
+    return Array.from(resolvedIds);
+  }, [favoriteOverrides, user?.favorites?.complements]);
+
   const handleFavoriteClick = (id: string) => {
     if (!user) {
       alert("Please login to add favorites");
       return;
     }
-    toggleFavorite.mutate(id);
+
+    const nextIsFavorited = !favoritedIds.includes(id);
+    setFavoriteOverrides((currentOverrides) => ({
+      ...currentOverrides,
+      [id]: nextIsFavorited,
+    }));
+
+    toggleFavorite.mutate(id, {
+      onError: () => {
+        setFavoriteOverrides((currentOverrides) => ({
+          ...currentOverrides,
+          [id]: !nextIsFavorited,
+        }));
+      },
+    });
   };
 
   const handleFilterChange = (newFilters: ComplementFilterValues) => {
+    const hasFiltersChanged =
+      newFilters.search !== filters.search ||
+      newFilters.category !== filters.category ||
+      newFilters.sort !== filters.sort;
+
+    if (!hasFiltersChanged) {
+      return;
+    }
+
     setFilters(newFilters);
-    setPage(1);
+
+    if (page !== 1) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("page", "1");
+      router.push(`${pathname}?${params.toString()}`, { scroll: false });
+    }
   };
+
+  const handlePageChange = (nextPage: number) => {
+    if (nextPage < 1) {
+      return;
+    }
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", String(nextPage));
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+  };
+
+  useEffect(() => {
+    if (!data?.pagination) {
+      return;
+    }
+
+    if (page > data.pagination.pages) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("page", String(data.pagination.pages));
+      router.push(`${pathname}?${params.toString()}`, { scroll: false });
+    }
+  }, [data?.pagination, page, pathname, router, searchParams]);
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -109,7 +181,7 @@ export const ComplementsPageClient = () => {
                 <ComplementGrid
                   complements={data.data}
                   onFavoriteClick={handleFavoriteClick}
-                  favoritedIds={user?.favorites?.complements || []}
+                  favoritedIds={favoritedIds}
                 />
 
                 {data.pagination && data.pagination.pages > 1 && (
@@ -117,18 +189,33 @@ export const ComplementsPageClient = () => {
                     <Button
                       variant="outline"
                       disabled={page === 1}
-                      onClick={() => setPage((current) => current - 1)}
+                      onClick={() => handlePageChange(page - 1)}
                     >
                       <ChevronLeft className="mr-2 h-4 w-4" />
                       Previous
                     </Button>
+                    <div className="flex items-center gap-2">
+                      {Array.from(
+                        { length: data.pagination.pages },
+                        (_, idx) => idx + 1,
+                      ).map((pageNumber) => (
+                        <Button
+                          key={pageNumber}
+                          variant={pageNumber === page ? "default" : "outline"}
+                          size="sm"
+                          onClick={() => handlePageChange(pageNumber)}
+                        >
+                          {pageNumber}
+                        </Button>
+                      ))}
+                    </div>
                     <span className="text-sm text-gray-600">
                       Page {page} of {data.pagination.pages}
                     </span>
                     <Button
                       variant="outline"
                       disabled={page === data.pagination.pages}
-                      onClick={() => setPage((current) => current + 1)}
+                      onClick={() => handlePageChange(page + 1)}
                     >
                       Next
                       <ChevronRight className="ml-2 h-4 w-4" />

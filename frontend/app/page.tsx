@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { BenefitsSection } from "@/components/home/BenefitsSection";
 import { HeroSection } from "@/components/home/HeroSection";
 import { HowItWorksSection } from "@/components/home/HowItWorksSection";
+import { ProofSection } from "@/components/home/ProofSection";
+import { SectionDivider } from "@/components/home/SectionDivider";
 import { ServicesSection } from "@/components/home/ServicesSection";
 
 export const metadata: Metadata = {
@@ -38,8 +40,13 @@ export default function HomePage() {
   return (
     <div>
       <HeroSection />
+      <SectionDivider className="-mt-10" />
       <ServicesSection />
+      <SectionDivider flip className="-mt-10" />
+      <ProofSection />
+      <SectionDivider className="-mt-10" />
       <BenefitsSection />
+      <SectionDivider flip className="-mt-10" />
       <HowItWorksSection />
     </div>
   );
