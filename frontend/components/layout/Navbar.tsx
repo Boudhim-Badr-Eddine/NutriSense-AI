@@ -30,6 +30,27 @@ const navLinks = [
   { label: "Supplements", href: "/supplements" },
   { label: "Complements", href: "/complements" },
   { label: "Nutrition Guide", href: "/nutrition" },
+  {
+    label: "Symptom Checker",
+    href: "/symptom-checker",
+    badge: "AI",
+    badgeClassName:
+      "text-[10px] bg-purple-500 text-white px-1.5 py-0.5 rounded-full ml-1",
+  },
+  {
+    label: "Stack Builder",
+    href: "/stack-builder",
+    badge: "AI",
+    badgeClassName:
+      "text-[10px] bg-indigo-500 text-white px-1.5 py-0.5 rounded-full ml-1",
+  },
+  {
+    label: "Meal Analyzer",
+    href: "/meal-analyzer",
+    badge: "Vision",
+    badgeClassName:
+      "text-[10px] bg-orange-500 text-white px-1.5 py-0.5 rounded-full ml-1",
+  },
   { label: "Orders", href: "/orders" },
 ];
 
