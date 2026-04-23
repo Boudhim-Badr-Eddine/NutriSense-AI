@@ -16,10 +16,29 @@ import symptomRoutes from "./routes/symptomRoutes";
 
 const app = express();
 
+const configuredOrigins = config.cors.origin
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+const allowedOrigins = Array.from(
+  new Set([
+    ...configuredOrigins,
+    "http://localhost:3000",
+    "http://localhost:3001",
+  ]),
+);
+
 app.use(helmet());
 app.use(
   cors({
-    origin: config.cors.origin,
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+        return;
+      }
+
+      callback(new Error("Not allowed by CORS"));
+    },
     credentials: true,
   }),
 );

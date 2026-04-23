@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Heart } from "lucide-react";
+import { ArrowRight, Heart, Star, StarHalf } from "lucide-react";
 import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
@@ -24,6 +24,62 @@ interface SupplementCardProps {
   isFavorited?: boolean;
 }
 
+const supplementAvisPool = [
+  { text: "Great energy and recovery after workouts.", rating: 4.5 },
+  { text: "Easy to use and the results feel consistent.", rating: 4.0 },
+  { text: "Good quality, no stomach discomfort for me.", rating: 3.5 },
+  { text: "Works, but taste can be improved.", rating: 2.5 },
+  { text: "Noticeable support for training performance.", rating: 4.0 },
+  { text: "Decent option for beginners on a budget.", rating: 3.0 },
+];
+
+const getSupplementAvis = (key: string) => {
+  const seed = key
+    .split("")
+    .reduce((total, char) => total + char.charCodeAt(0), 0);
+  const firstIndex = seed % supplementAvisPool.length;
+  let secondIndex = (seed * 3 + 2) % supplementAvisPool.length;
+
+  if (secondIndex === firstIndex) {
+    secondIndex = (secondIndex + 1) % supplementAvisPool.length;
+  }
+
+  return [supplementAvisPool[firstIndex], supplementAvisPool[secondIndex]];
+};
+
+const renderRatingStars = (rating: number, keyBase: string) => {
+  return Array.from({ length: 5 }, (_, index) => {
+    const starNumber = index + 1;
+    const isFull = rating >= starNumber;
+    const isHalf = !isFull && rating >= starNumber - 0.5;
+
+    if (isFull) {
+      return (
+        <Star
+          key={`${keyBase}-full-${starNumber}`}
+          className="h-3.5 w-3.5 fill-current"
+        />
+      );
+    }
+
+    if (isHalf) {
+      return (
+        <StarHalf
+          key={`${keyBase}-half-${starNumber}`}
+          className="h-3.5 w-3.5 fill-current"
+        />
+      );
+    }
+
+    return (
+      <Star
+        key={`${keyBase}-empty-${starNumber}`}
+        className="h-3.5 w-3.5 text-amber-200"
+      />
+    );
+  });
+};
+
 export const SupplementCard = ({
   supplement,
   onFavoriteClick,
@@ -31,6 +87,7 @@ export const SupplementCard = ({
 }: SupplementCardProps) => {
   const detailPath = `/supplements/${supplement.slug || supplement._id}`;
   const priceLabel = formatPrice(getSupplementPrice(supplement));
+  const avis = getSupplementAvis(supplement.slug || supplement._id);
 
   return (
     <motion.div
@@ -103,6 +160,25 @@ export const SupplementCard = ({
                 </ul>
               </div>
             )}
+
+            <div className="rounded-xl border border-slate-200 bg-slate-50 p-2.5">
+              <ul className="space-y-1 text-xs text-slate-600">
+                {avis.map((review, index) => (
+                  <li key={`${supplement._id}-avis-${index}`}>
+                    <div className="mb-1 flex items-center gap-1 text-amber-500">
+                      {renderRatingStars(
+                        review.rating,
+                        `${supplement._id}-${index}`,
+                      )}
+                      <span className="ml-1 text-[11px] font-semibold text-slate-500">
+                        {review.rating.toFixed(1)}/5
+                      </span>
+                    </div>
+                    <p className="line-clamp-1">&ldquo;{review.text}&rdquo;</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </CardContent>
         <CardFooter>

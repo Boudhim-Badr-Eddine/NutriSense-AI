@@ -9,7 +9,7 @@ import {
   useState,
 } from "react";
 
-export type CartItemType = "supplement" | "complement";
+export type CartItemType = "supplement" | "complement" | "material";
 
 export interface CartItem {
   id: string;

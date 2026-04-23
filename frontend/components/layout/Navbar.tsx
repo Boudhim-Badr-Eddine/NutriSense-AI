@@ -3,7 +3,7 @@
 import { Menu, Minus, Plus, ShoppingCart, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 
 import { useAuth } from "@/app/AuthContext";
 import { useCart } from "@/app/CartContext";
@@ -29,6 +29,7 @@ const navLinks = [
   { label: "Home", href: "/" },
   { label: "Supplements", href: "/supplements" },
   { label: "Complements", href: "/complements" },
+  { label: "Materials", href: "/materials" },
   { label: "Nutrition Guide", href: "/nutrition" },
   {
     label: "Symptom Checker",
@@ -52,6 +53,7 @@ const navLinks = [
       "text-[10px] bg-orange-500 text-white px-1.5 py-0.5 rounded-full ml-1",
   },
   { label: "Orders", href: "/orders" },
+  { label: "Admin", href: "/admin" },
 ];
 
 /**
@@ -71,6 +73,15 @@ export const Navbar = () => {
     clearCart,
   } = useCart();
   const [scrolled, setScrolled] = useState(false);
+  const hasHydratedCart = useSyncExternalStore(
+    () => () => undefined,
+    () => true,
+    () => false,
+  );
+  const safeItems = hasHydratedCart ? items : [];
+  const safeItemCount = hasHydratedCart ? itemCount : 0;
+  const safeSubtotal = hasHydratedCart ? subtotal : 0;
+  const visibleNavLinks = navLinks;
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 8);
@@ -87,9 +98,9 @@ export const Navbar = () => {
       className="relative"
     >
       <ShoppingCart className="h-5 w-5 text-slate-600" />
-      {itemCount > 0 && (
+      {safeItemCount > 0 && (
         <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-semibold text-white">
-          {itemCount}
+          {safeItemCount}
         </span>
       )}
     </Button>
@@ -100,7 +111,7 @@ export const Navbar = () => {
       <SheetHeader className="border-b pb-4">
         <div className="flex items-center justify-between gap-3">
           <SheetTitle>Shopping Bag</SheetTitle>
-          {items.length > 0 && (
+          {safeItems.length > 0 && (
             <Button variant="ghost" size="sm" onClick={clearCart}>
               Clear all
             </Button>
@@ -108,21 +119,21 @@ export const Navbar = () => {
         </div>
       </SheetHeader>
 
-      {items.length === 0 ? (
+      {safeItems.length === 0 ? (
         <div className="flex h-full flex-col items-center justify-center gap-3 text-center text-slate-500">
           <ShoppingCart className="h-10 w-10 text-slate-300" />
           <p className="text-lg font-semibold text-slate-700">
             Your shopping bag is empty
           </p>
           <p className="max-w-sm text-sm">
-            Add supplements or complements from a product page and they will
-            appear here.
+            Add supplements, complements, or materials from product pages and
+            they will appear here.
           </p>
         </div>
       ) : (
         <div className="flex h-full flex-col">
           <div className="flex-1 space-y-4 overflow-y-auto py-4">
-            {items.map((item) => (
+            {safeItems.map((item) => (
               <div
                 key={`${item.type}-${item.id}`}
                 className="rounded-xl border border-slate-200 bg-white p-3 shadow-sm"
@@ -223,7 +234,7 @@ export const Navbar = () => {
             <div className="mb-4 flex items-center justify-between text-sm">
               <span className="text-slate-500">Subtotal</span>
               <span className="text-lg font-bold text-slate-900">
-                {formatPrice(subtotal)}
+                {formatPrice(safeSubtotal)}
               </span>
             </div>
             <p className="mb-4 text-xs text-slate-500">
@@ -260,7 +271,7 @@ export const Navbar = () => {
           </Link>
 
           <nav className="hidden items-center gap-6 md:flex">
-            {navLinks.map((link) => (
+            {visibleNavLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -342,7 +353,7 @@ export const Navbar = () => {
                   <SheetTitle>Menu</SheetTitle>
                 </SheetHeader>
                 <nav className="mt-6 flex flex-col gap-4">
-                  {navLinks.map((link) => (
+                  {visibleNavLinks.map((link) => (
                     <SheetClose asChild key={link.href}>
                       <Link
                         href={link.href}

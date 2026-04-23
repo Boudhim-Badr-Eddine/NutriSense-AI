@@ -28,6 +28,7 @@ export interface User {
   id: string;
   name: string;
   email: string;
+  role?: "user" | "admin";
   favorites: UserFavorites;
   createdAt: string;
   updatedAt: string;

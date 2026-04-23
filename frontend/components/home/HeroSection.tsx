@@ -79,8 +79,7 @@ const supplements: Supplement[] = [
     accentFrom: "#be185d",
     accentTo: "#fb7185",
     iconBg: "from-red-400 to-red-600",
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0PAIIytbuyKu_ppX85BEsmgg4tLvACv27qg&s",
+    image: "/images/supplements/caffeine-beta-alanine-pre-workout.jpg",
   },
 ];
 

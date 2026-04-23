@@ -10,7 +10,6 @@ import {
   Pill,
   ShoppingCart,
 } from "lucide-react";
-import Image from "next/image";
 import { useState } from "react";
 
 import { useAuth } from "@/app/AuthContext";
@@ -114,13 +113,16 @@ export const SupplementDetailPageClient = ({
           <div className="flex flex-col lg:flex-row gap-8 items-start">
             {supplement.images?.[0] && (
               <div className="relative h-80 w-full overflow-hidden rounded-lg bg-white lg:w-[420px]">
-                <Image
+                <img
                   src={supplement.images[0]}
                   alt={supplement.name}
-                  fill
-                  className="object-contain p-4"
-                  sizes="(min-width: 1024px) 420px, 100vw"
-                  priority
+                  className="h-full w-full object-contain p-4"
+                  loading="eager"
+                  onError={(event) => {
+                    event.currentTarget.onerror = null;
+                    event.currentTarget.src =
+                      "/images/placeholders/product.svg";
+                  }}
                 />
               </div>
             )}

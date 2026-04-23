@@ -9,7 +9,6 @@ import {
   Shield,
   ShoppingCart,
 } from "lucide-react";
-import Image from "next/image";
 import { useState } from "react";
 
 import { useAuth } from "@/app/AuthContext";
@@ -124,13 +123,16 @@ export const ComplementDetailPageClient = ({
           <div className="flex flex-col lg:flex-row gap-8 items-start">
             {complement.images?.[0] && (
               <div className="relative h-80 w-full overflow-hidden rounded-lg bg-white lg:w-[420px]">
-                <Image
+                <img
                   src={complement.images[0]}
                   alt={complement.name}
-                  fill
-                  className="object-contain p-4"
-                  sizes="(min-width: 1024px) 420px, 100vw"
-                  priority
+                  className="h-full w-full object-contain p-4"
+                  loading="eager"
+                  onError={(event) => {
+                    event.currentTarget.onerror = null;
+                    event.currentTarget.src =
+                      "/images/placeholders/product.svg";
+                  }}
                 />
               </div>
             )}

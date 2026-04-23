@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { FilterQuery, Model, isValidObjectId } from "mongoose";
+import slugify from "slugify";
 
 import { ApiError } from "./ApiError";
 import { catchAsync } from "./catchAsync";
@@ -58,6 +59,26 @@ const buildSort = (sort?: string): string => {
     return "-createdAt";
   }
   return sort.split(",").join(" ");
+};
+
+const normalizePayloadWithSlug = <T>(payload: Partial<T>): Partial<T> => {
+  const payloadWithName = payload as Partial<T> & { name?: string };
+
+  if (
+    typeof payloadWithName.name === "string" &&
+    payloadWithName.name.trim().length > 0
+  ) {
+    return {
+      ...payload,
+      slug: slugify(payloadWithName.name, {
+        lower: true,
+        strict: true,
+        trim: true,
+      }),
+    } as Partial<T>;
+  }
+
+  return payload;
 };
 
 const resolveFindByIdOrSlug = async <T>(
@@ -167,7 +188,9 @@ export const getOne = <T>(ModelClass: Model<T>) =>
  */
 export const createOne = <T>(ModelClass: Model<T>) =>
   catchAsync(async (req: Request, res: Response): Promise<void> => {
-    const document = await ModelClass.create(req.body as Partial<T>);
+    const document = await ModelClass.create(
+      normalizePayloadWithSlug(req.body as Partial<T>),
+    );
 
     res.status(201).json({
       success: true,
@@ -189,7 +212,7 @@ export const updateOne = <T>(ModelClass: Model<T>) =>
     const document = await resolveFindOneAndUpdate(
       ModelClass,
       idOrSlug,
-      req.body,
+      normalizePayloadWithSlug(req.body as Partial<T>),
     );
     if (!document) {
       throw ApiError.notFound("Resource not found");

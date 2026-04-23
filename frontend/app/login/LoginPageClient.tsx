@@ -4,7 +4,7 @@ import { AxiosError } from "axios";
 import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 import { useAuth } from "@/app/AuthContext";
@@ -26,12 +26,37 @@ interface LoginFormState {
   password: string;
 }
 
+interface ApiErrorPayload {
+  error?: string;
+  message?: string;
+}
+
+const extractLoginErrorMessage = (error: unknown): string => {
+  if (error instanceof AxiosError) {
+    const payload = error.response?.data as ApiErrorPayload | undefined;
+    if (payload?.error || payload?.message) {
+      return payload.error ?? payload.message ?? "Unable to login.";
+    }
+
+    if (!error.response) {
+      return "Cannot reach the server. Start backend (port 5000) and try again.";
+    }
+  }
+
+  if (error instanceof Error && error.message) {
+    return error.message;
+  }
+
+  return "Unable to login.";
+};
+
 /**
  * WHY: Provide a clean login experience with validation and API feedback.
  */
 export const LoginPageClient = () => {
   const { login } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [formState, setFormState] = useState<LoginFormState>({
     email: "",
     password: "",
@@ -56,13 +81,10 @@ export const LoginPageClient = () => {
     setIsSubmitting(true);
     try {
       await login(formState.email, formState.password);
-      router.push("/chat");
+      const redirectTarget = searchParams.get("redirect");
+      router.push(redirectTarget || "/chat");
     } catch (err: unknown) {
-      if (err instanceof AxiosError) {
-        setError(err.response?.data?.error ?? "Unable to login.");
-      } else {
-        setError("Unable to login.");
-      }
+      setError(extractLoginErrorMessage(err));
     } finally {
       setIsSubmitting(false);
     }

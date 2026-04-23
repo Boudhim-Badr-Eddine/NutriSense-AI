@@ -1,4 +1,4 @@
-import { ArrowRight, Heart } from "lucide-react";
+import { ArrowRight, Heart, Star, StarHalf } from "lucide-react";
 import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
@@ -20,6 +20,62 @@ interface ComplementCardProps {
   isFavorited?: boolean;
 }
 
+const complementAvisPool = [
+  { text: "Very helpful for daily balance and focus.", rating: 4.0 },
+  { text: "Simple to add to my routine, good quality.", rating: 3.5 },
+  { text: "I noticed better consistency after two weeks.", rating: 4.5 },
+  { text: "Clean formula and easy to tolerate.", rating: 4.0 },
+  { text: "Good overall, but effect was moderate for me.", rating: 2.5 },
+  { text: "Feels effective and well-dosed.", rating: 3.0 },
+];
+
+const getComplementAvis = (key: string) => {
+  const seed = key
+    .split("")
+    .reduce((total, char) => total + char.charCodeAt(0), 0);
+  const firstIndex = seed % complementAvisPool.length;
+  let secondIndex = (seed * 5 + 1) % complementAvisPool.length;
+
+  if (secondIndex === firstIndex) {
+    secondIndex = (secondIndex + 2) % complementAvisPool.length;
+  }
+
+  return [complementAvisPool[firstIndex], complementAvisPool[secondIndex]];
+};
+
+const renderRatingStars = (rating: number, keyBase: string) => {
+  return Array.from({ length: 5 }, (_, index) => {
+    const starNumber = index + 1;
+    const isFull = rating >= starNumber;
+    const isHalf = !isFull && rating >= starNumber - 0.5;
+
+    if (isFull) {
+      return (
+        <Star
+          key={`${keyBase}-full-${starNumber}`}
+          className="h-3.5 w-3.5 fill-current"
+        />
+      );
+    }
+
+    if (isHalf) {
+      return (
+        <StarHalf
+          key={`${keyBase}-half-${starNumber}`}
+          className="h-3.5 w-3.5 fill-current"
+        />
+      );
+    }
+
+    return (
+      <Star
+        key={`${keyBase}-empty-${starNumber}`}
+        className="h-3.5 w-3.5 text-amber-200"
+      />
+    );
+  });
+};
+
 /**
  * WHY: Present a quick overview of a complement with primary actions.
  */
@@ -30,6 +86,7 @@ export const ComplementCard = ({
 }: ComplementCardProps) => {
   const detailPath = `/complements/${complement.slug || complement._id}`;
   const priceLabel = formatPrice(getComplementPrice(complement));
+  const avis = getComplementAvis(complement.slug || complement._id);
 
   return (
     <Card className="group flex h-full flex-col overflow-hidden border-slate-200 transition-shadow hover:shadow-xl">
@@ -95,6 +152,25 @@ export const ComplementCard = ({
             </ul>
           </div>
         )}
+
+        <div className="rounded-xl border border-slate-200 bg-slate-50 p-2.5">
+          <ul className="space-y-1 text-xs text-slate-600">
+            {avis.map((review, index) => (
+              <li key={`${complement._id}-avis-${index}`}>
+                <div className="mb-1 flex items-center gap-1 text-amber-500">
+                  {renderRatingStars(
+                    review.rating,
+                    `${complement._id}-${index}`,
+                  )}
+                  <span className="ml-1 text-[11px] font-semibold text-slate-500">
+                    {review.rating.toFixed(1)}/5
+                  </span>
+                </div>
+                <p className="line-clamp-1">&ldquo;{review.text}&rdquo;</p>
+              </li>
+            ))}
+          </ul>
+        </div>
       </CardContent>
       <CardFooter>
         <Link href={detailPath} className="w-full">
